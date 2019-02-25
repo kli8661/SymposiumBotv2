@@ -1,10 +1,8 @@
 import discord
-# import google as GL
-# import music as MU
-# import reddit as RD
-# from google import [ALL FUNCTIONS HERE]
-# from music import [ALL FUNCTIONS HERE]
-# from reddit import [ALL FUNCTION HERE]
+import testing as ts
+# import google as gl
+# import music as mu
+# import reddit as rd
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
 
@@ -26,5 +24,10 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
+
+ts.eight_ball()
+ts.square()
+ts.bitcoin()
+ts.list_servers()
 
 client.run(TOKEN)

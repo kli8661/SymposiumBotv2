@@ -1,4 +1,7 @@
 import discord
+# import google as GL
+# import music as MU
+# import reddit as RD
 # from google import [ALL FUNCTIONS HERE]
 # from music import [ALL FUNCTIONS HERE]
 # from reddit import [ALL FUNCTION HERE]

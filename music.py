@@ -1,7 +1,4 @@
 import discord
-# from google import [ALL FUNCTIONS HERE]
-# from music import [ALL FUNCTIONS HERE]
-# from reddit import [ALL FUNCTION HERE]
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
 

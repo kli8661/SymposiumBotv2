@@ -26,7 +26,7 @@ async def ping():
 @client.command(name='8ball',
                 description="Answers a yes/no question.",
                 brief="Answers from the beyond.",
-                aliases=['eight_ball', 'eightball', '8-ball', '8ball'],
+                aliases=['eight_ball', 'eightball', '8-ball'],
                 pass_context=True)
 async def eight_ball(context):
     possible_responses = [

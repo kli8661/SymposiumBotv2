@@ -57,7 +57,6 @@ async def bitcoin():
         await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
 
 
-@client.command()
 async def list_servers():
     await client.wait_until_ready()
     while not client.is_closed:

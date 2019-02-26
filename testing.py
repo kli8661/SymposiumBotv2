@@ -7,15 +7,26 @@ from discord.ext.commands import Bot
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
 
-BOT_PREFIX = ("?", "!")
+BOT_PREFIX = '#'
 
 client = Bot(command_prefix=BOT_PREFIX)
+
+
+@client.event
+async def on_ready():
+    await client.change_presence(game=Game(name="with humans"))
+    print("Logged in as " + client.user.name)
+
+
+@client.command()
+async def ping():
+    await client.say("pong")
 
 
 @client.command(name='8ball',
                 description="Answers a yes/no question.",
                 brief="Answers from the beyond.",
-                aliases=['eight_ball', 'eightball', '8-ball'],
+                aliases=['eight_ball', 'eightball', '8-ball', '8ball'],
                 pass_context=True)
 async def eight_ball(context):
     possible_responses = [
@@ -24,6 +35,8 @@ async def eight_ball(context):
         'Too hard to tell',
         'It is quite possible',
         'Definitely',
+        'Impossible',
+        'Try asking a better question'
     ]
     await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
 
@@ -32,12 +45,6 @@ async def eight_ball(context):
 async def square(number):
     squared_value = int(number) * int(number)
     await client.say(str(number) + " squared is " + str(squared_value))
-
-
-@client.event
-async def on_ready():
-    await client.change_presence(game=Game(name="with humans"))
-    print("Logged in as " + client.user.name)
 
 
 @client.command()
@@ -50,6 +57,7 @@ async def bitcoin():
         await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
 
 
+@client.command()
 async def list_servers():
     await client.wait_until_ready()
     while not client.is_closed:

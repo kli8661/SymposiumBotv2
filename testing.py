@@ -2,6 +2,7 @@ import random
 import asyncio
 import aiohttp
 import json
+import discord
 from discord import Game
 from discord.ext.commands import Bot
 
@@ -18,7 +19,9 @@ async def on_ready():
     print("Logged in as " + client.user.name)
 
 
-@client.command()
+@client.command(name='ping',
+                description="Tests if the bot is alive.",
+                brief="Ping and Pong.")
 async def ping():
     await client.say("pong")
 
@@ -41,13 +44,17 @@ async def eight_ball(context):
     await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
 
 
-@client.command()
+@client.command(name='square',
+                description="Squares a number.",
+                brief="Squares a number.")
 async def square(number):
     squared_value = int(number) * int(number)
     await client.say(str(number) + " squared is " + str(squared_value))
 
 
-@client.command()
+@client.command(name='bitcoin',
+                description="Check's Bitcoin Price to USD",
+                brief="Bitcoin Price.")
 async def bitcoin():
     url = 'https://api.coindesk.com/v1/bpi/currentprice/BTC.json'
     async with aiohttp.ClientSession() as session:  # Async HTTP request
@@ -55,6 +62,28 @@ async def bitcoin():
         response = await raw_response.text()
         response = json.loads(response)
         await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
+
+
+@client.command(name='help_private',
+                description="Help but it sends a private message to you.",
+                brief="Private Help.",
+                aliases=['helpp'],
+                pass_content=True)
+async def help_private(cmd):
+    author = cmd.message.author
+
+    embed = discord.Embed(
+        colour=discord.Colour.blue()
+    )
+
+    embed.set_author(name='Help')
+    embed.add_field(name='$help_private', value='This Command', inline=False)
+    embed.add_field(name='$ping', value='Returns pong', inline=False)
+    embed.add_field(name='$eight_ball', value='Returns an answer from beyond', inline=False)
+    embed.add_field(name='$square', value='Squares a number', inline=False)
+    embed.add_field(name='$bitcoin', value='Checks Bitcoin Prices', inline=False)
+
+    await client.send_message(author, embed=embed)
 
 
 async def list_servers():

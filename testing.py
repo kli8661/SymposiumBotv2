@@ -1,3 +1,5 @@
+# Here we run all of our methods, each individual file is for each peron's work on the project.
+
 import random
 import asyncio
 import aiohttp
@@ -45,7 +47,8 @@ async def eight_ball(context):
 
 
 @client.command(name='join',
-                description="joins current voice channel"
+                description="Joins current voice channel.",
+                brief="Joins voice channel."
                 , pass_context=True)
 async def join(msg):
     join_channel = msg.message.server
@@ -53,7 +56,8 @@ async def join(msg):
 
 
 @client.command(name='leave',
-                description="leaves the voice channel"
+                description="Leaves voice channel.",
+                brief="Leaves voice channel."
                 , pass_context=True)
 async def leave(msg):
     leave_channel = msg.message.server

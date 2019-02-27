@@ -1,8 +1,5 @@
 import discord
 import testing as ts
-# import google as gl
-import music as mu
-# import reddit as rd
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
 
@@ -12,7 +9,7 @@ client = discord.Client()
 @client.event
 async def on_message(message):
     # we do not want the bot to reply to itself
-    if message.author == clien  t.user:
+    if message.author == client.user:
         return
 
 ts.on_ready()

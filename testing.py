@@ -44,6 +44,23 @@ async def eight_ball(context):
     await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
 
 
+@client.command(name='join',
+                description="joins current voice channel"
+                , pass_context=True)
+async def join(msg):
+    join_channel = msg.message.server
+    await client .join_voice_channel(join_channel)
+
+
+@client.command(name='leave',
+                description="leaves the voice channel"
+                , pass_context=True)
+async def leave(msg):
+    leave_channel = msg.message.server
+    voice_client = client.voice_client_in(leave_channel)
+    await voice_client.disconnect()
+
+
 @client.command(name='square',
                 description="Squares a number.",
                 brief="Squares a number.")

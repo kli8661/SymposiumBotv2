@@ -12,7 +12,7 @@ client = discord.Client()
 @client.event
 async def on_message(message):
     # we do not want the bot to reply to itself
-    if message.author == client.user:
+    if message.author == clien  t.user:
         return
 
 ts.on_ready()
@@ -22,7 +22,7 @@ ts.square()
 ts.bitcoin()
 ts.list_servers()
 ts.help_me()
-mu.join()
-mu.leave()
+ts.join()
+ts.leave()
 
 client.run(TOKEN)

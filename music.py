@@ -7,13 +7,17 @@ BOT_PREFIX = '$'
 client = commands.Bot(command_prefix=BOT_PREFIX)
 
 
-@client.command(pass_context=True)
+@client.command(name='join',
+                description="joins current voice channel"
+                , pass_context=True)
 async def join(msg):
     join_channel = msg.message.server
     await client .join_voice_channel(join_channel)
 
 
-@client.command(pass_context=True)
+@client.command(name='leave',
+                description="leaves the voice channel"
+                , pass_context=True)
 async def leave(msg):
     leave_channel = msg.message.server
     voice_client = client.voice_client_in(leave_channel)

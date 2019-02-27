@@ -21,6 +21,6 @@ ts.eight_ball()
 ts.square()
 ts.bitcoin()
 ts.list_servers()
-ts.help_private()
+ts.help_me()
 
 client.run(TOKEN)

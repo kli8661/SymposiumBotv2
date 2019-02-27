@@ -64,24 +64,20 @@ async def bitcoin():
         await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
 
 
-@client.command(name='help_private',
+@client.command(name='help_me',
                 description="Help but it sends a private message to you.",
                 brief="Private Help.",
-                aliases=['helpp'],
-                pass_content=True)
-async def help_private(cmd):
-    author = cmd.message.author
+                aliases=['helpp', 'help_private'],
+                pass_context=True)
+async def help_me(ctx):
+    author = ctx.message.author
 
     embed = discord.Embed(
         colour=discord.Colour.blue()
     )
 
-    embed.set_author(name='Help')
-    embed.add_field(name='$help_private', value='This Command', inline=False)
-    embed.add_field(name='$ping', value='Returns pong', inline=False)
-    embed.add_field(name='$eight_ball', value='Returns an answer from beyond', inline=False)
-    embed.add_field(name='$square', value='Squares a number', inline=False)
-    embed.add_field(name='$bitcoin', value='Checks Bitcoin Prices', inline=False)
+    embed.set_author(name='HelpMe')
+    embed.add_field(name='$ping', value='Returns Pong!', inline=False)
 
     await client.send_message(author, embed=embed)
 

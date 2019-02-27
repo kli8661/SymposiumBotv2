@@ -60,9 +60,8 @@ async def join(ctx):
                 brief="Leaves voice channel."
                 , pass_context=True)
 async def leave(ctx):
-    server = ctx.message.server
-    voice_client = client.voice_client_in(server)
-    await voice_client.disconnect()
+    vc = await client.join_voice_channel(ctx.message.author.voice_channel)
+    await vc.disconnect()
 
 
 @client.command(name='square',

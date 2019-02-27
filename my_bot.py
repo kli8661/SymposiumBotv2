@@ -1,7 +1,7 @@
 import discord
 import testing as ts
 # import google as gl
-# import music as mu
+import music as mu
 # import reddit as rd
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
@@ -22,5 +22,7 @@ ts.square()
 ts.bitcoin()
 ts.list_servers()
 ts.help_me()
+mu.join()
+mu.leave()
 
 client.run(TOKEN)

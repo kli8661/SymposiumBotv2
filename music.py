@@ -20,20 +20,4 @@ async def leave(msg):
     await voice_client.disconnect()
 
 
-@client.command(name='p',
-                description="plays an audio from youtube video",
-                brief="plays music",
-                aliases=['music', 'plays', 'audio'],
-                pass_context=True)
-async def eight_ball(context):
-    possible_responses = [
-        'That is a resounding no',
-        'It is not looking likely',
-        'Too hard to tell',
-        'It is quite possible',
-        'Definitely',
-        'Impossible',
-        'Try asking a better question'
-    ]
-
 client.run(TOKEN)

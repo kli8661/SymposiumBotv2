@@ -21,5 +21,7 @@ ts.list_servers()
 ts.help_me()
 ts.join()
 ts.leave()
+ts.rimage()
+ts.clear()
 
 client.run(TOKEN)

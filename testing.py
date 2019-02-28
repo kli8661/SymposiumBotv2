@@ -96,7 +96,7 @@ async def help_me(ctx):
         colour=discord.Colour.blue()
     )
 
-    embed.set_author(name='HelpMe')
+    embed.set_author(name='Help')
     embed.add_field(name='$ping', value='Returns Pong!', inline=False)
 
     await client.send_message(author, embed=embed)

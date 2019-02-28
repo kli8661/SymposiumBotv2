@@ -13,19 +13,18 @@ client = commands.Bot(command_prefix=BOT_PREFIX)
                 description="Joins current voice channel.",
                 brief="Joins voice channel."
                 , pass_context=True)
-async def join(msg):
-    join_channel = msg.message.server
-    await client .join_voice_channel(join_channel)
+async def join(ctx):
+    channel = ctx.message.author.voice.voice_channel
+    await client.join_voice_channel(channel)
 
 
 @client.command(name='leave',
                 description="Leaves voice channel.",
                 brief="Leaves voice channel."
                 , pass_context=True)
-async def leave(msg):
-    leave_channel = msg.message.server
-    voice_client = client.voice_client_in(leave_channel)
-    await voice_client.disconnect()
+async def leave(ctx):
+    vc = await client.join_voice_channel(ctx.message.author.voice_channel)
+    await vc.disconnect()
 
 
 client.run(TOKEN)

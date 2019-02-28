@@ -64,6 +64,20 @@ async def leave(ctx):
     await vc.disconnect()
 
 
+@client.command(name='clear',
+                description='clears the amount of lines in the text channel the user wants',
+                brief='clears a certain amount of messages',
+                pass_context=True)
+async def clear(context, amount):
+    amount = amount
+    channel = context.message.channel
+    lines = []
+    async for message in client.logs_from(channel, limit=int(amount)):
+        lines.append(message)
+    await client.delete_messages(lines)
+    await client.say('Text channel cleared.')
+
+
 @client.command(name='square',
                 description="Squares a number.",
                 brief="Squares a number.")

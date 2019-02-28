@@ -72,7 +72,7 @@ async def clear(context, amount):
     amount = amount
     channel = context.message.channel
     lines = []
-    async for message in client.logs_from(channel, limit=int(amount)):
+    async for message in client.logs_from(channel, limit=int(amount) + 1):
         lines.append(message)
     await client.delete_messages(lines)
     await client.say('Text channel cleared.')

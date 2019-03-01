@@ -12,7 +12,10 @@ BOT_PREFIX = '.'
 client = Bot(command_prefix=BOT_PREFIX)
 
 
-@client.command()
+@client.command(name='rimage',
+                description="Grabs image from user subreddit.",
+                brief="Grabs image from subreddit.",
+                pass_context=True)
 async def rimage(sub):
     while True:
         subreddit = sub.content[7:]

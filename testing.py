@@ -1,10 +1,9 @@
-# Here we run all of our methods, each individual file is for each peron's work on the project.
+# Here are some general/testing methods that were worked on by all of us.
 
 import random
 import asyncio
 import aiohttp
 import json
-import http
 import discord
 from discord import Game
 from discord.ext.commands import Bot
@@ -46,24 +45,6 @@ async def eight_ball(context):
         'Try asking a better question'
     ]
     await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
-
-
-@client.command(name='join',
-                description="Joins current voice channel.",
-                brief="Joins voice channel."
-                , pass_context=True)
-async def join(ctx):
-    channel = ctx.message.author.voice.voice_channel
-    await client.join_voice_channel(channel)
-
-
-@client.command(name='leave',
-                description="Leaves voice channel.",
-                brief="Leaves voice channel."
-                , pass_context=True)
-async def leave(ctx):
-    vc = await client.join_voice_channel(ctx.message.author.voice_channel)
-    await vc.disconnect()
 
 
 @client.command(name='clear',
@@ -116,38 +97,6 @@ async def help_me(ctx):
     embed.add_field(name='$ping', value='Returns Pong!', inline=False)
 
     await client.send_message(author, embed=embed)
-
-
-@client.command(name='rimage',
-                description="Grabs image from user subreddit.",
-                brief="Grabs image from subreddit.",
-                pass_context=True)
-async def rimage(sub):
-    while True:
-        subreddit = sub.content[7:]
-        subtest = urlprefix + subreddit + '.json'
-        response = http.request('GET', subtest)
-        check = response.data
-        parse = json.loads(check)
-        if parse['data']['dist'] == 0:
-            await client.send_message(sub.channel, 'That subreddit does not exist!')
-            return
-        url = urlprefix + subreddit + urlsuffix
-        while True:
-            response = http.request('GET', url)
-            jsonparse = json.loads(response.data.decode('utf-8'))
-            image = jsonparse[0]['data']['children'][0]['data']['url']
-            if image.endswith('.png') or image.endswith('jpeg') or image.endswith('jpg') or image.endswith('gif'):
-                await client.send_message(sub.channel, image)
-                return
-            else:
-                global count
-                count += 1
-            if count == 10:
-                await client.send_message(sub.channel, 'No image found.')
-                return
-            await client.send_message(sub.channel, 'Try command !rimage subreddit')
-            return
 
 
 async def list_servers():

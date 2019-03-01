@@ -18,7 +18,7 @@ client = Bot(command_prefix=BOT_PREFIX)
 
 @client.event
 async def on_ready():
-    await client.change_presence(game=Game(name=" $help"))
+    await client.change_presence(game=Game(name=" .help"))
     print("Logged in as " + client.user.name)
 
 

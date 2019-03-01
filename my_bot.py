@@ -1,5 +1,6 @@
 import discord
 import testing as ts
+import reddit as rd
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
 
@@ -21,7 +22,8 @@ ts.list_servers()
 ts.help_me()
 ts.join()
 ts.leave()
-ts.rimage()
-ts.clear()
+rd.rimage()
+# ts.rimage()
+# ts.clear()
 
 client.run(TOKEN)

@@ -13,7 +13,7 @@ urlprefix = "https://reddit.com/r/"
 urlsuffix = "/random.json"
 count = 0
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
-BOT_PREFIX = '$'
+BOT_PREFIX = '.'
 client = Bot(command_prefix=BOT_PREFIX)
 
 
@@ -142,7 +142,7 @@ async def rimage(sub):
                 return
             else:
                 global count
-                count+=1
+                count += 1
             if count == 10:
                 await client.send_message(sub.channel, 'No image found.')
                 return

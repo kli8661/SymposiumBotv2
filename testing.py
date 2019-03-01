@@ -48,8 +48,8 @@ async def eight_ball(context):
 
 
 @client.command(name='clear',
-                description='clears the amount of lines in the text channel the user wants',
-                brief='clears a certain amount of messages',
+                description='Clears the amount of lines in the text channel the user wants.',
+                brief='Clears a certain amount of messages.',
                 pass_context=True)
 async def clear(context, amount):
     amount = amount

@@ -105,5 +105,23 @@ async def list_servers():
         await asyncio.sleep(600)
 
 
+@client.command(name='join',
+                description="Joins current voice channel.",
+                brief="Joins voice channel."
+                , pass_context=True)
+async def join(ctx):
+    channel = ctx.message.author.voice.voice_channel
+    await client.join_voice_channel(channel)
+
+
+@client.command(name='leave',
+                description="Leaves voice channel.",
+                brief="Leaves voice channel."
+                , pass_context=True)
+async def leave(ctx):
+    vc = await client.join_voice_channel(ctx.message.author.voice_channel)
+    await vc.disconnect()
+
+
 client.loop.create_task(list_servers())
 client.run(TOKEN)

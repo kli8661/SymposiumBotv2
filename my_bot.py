@@ -1,8 +1,5 @@
-import discord
-from testing import *
-from reddit import *
-from google import *
-from music import *
+# Main runner for the bot.
+import testing
 from discord.ext.commands import Bot
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
@@ -16,17 +13,16 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-on_ready()
-list_servers()
-join()
-leave()
-ping()
-eight_ball()
-square()
-bitcoin()
-help_me()
-clear()
-rimage()
+testing.on_ready()
+testing.list_servers()
+testing.join()
+testing.leave()
+testing.ping()
+testing.eight_ball()
+testing.square()
+testing.bitcoin()
+testing.help_me()
+testing.clear()
 
 
 client.run(TOKEN)

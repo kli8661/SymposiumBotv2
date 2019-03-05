@@ -1,11 +1,13 @@
 import discord
-import testing as ts
-import reddit as rd
-import music as mu
+from testing import *
+from reddit import *
+from google import *
+from music import *
+from discord.ext.commands import Bot
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
-
-client = discord.Client()
+BOT_PREFIX = '.'
+client = Bot(command_prefix=BOT_PREFIX)
 
 
 @client.event
@@ -14,17 +16,17 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-ts.on_ready()
-ts.list_servers()
-mu.join()
-mu.leave()
-ts.ping()
-ts.eight_ball()
-ts.square()
-ts.bitcoin()
-ts.help_me()
-ts.clear()
-rd.rimage()
+on_ready()
+list_servers()
+join()
+leave()
+ping()
+eight_ball()
+square()
+bitcoin()
+help_me()
+clear()
+rimage()
 
 
 client.run(TOKEN)

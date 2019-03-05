@@ -8,9 +8,6 @@ import discord
 from discord import Game
 from discord.ext.commands import Bot
 
-urlprefix = "https://reddit.com/r/"
-urlsuffix = "/random.json"
-count = 0
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
 BOT_PREFIX = '.'
 client = Bot(command_prefix=BOT_PREFIX)

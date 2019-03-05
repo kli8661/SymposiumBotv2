@@ -1,5 +1,6 @@
 # Here are some general/testing methods that were worked on by all of us.
 
+import praw
 import random
 import asyncio
 import aiohttp
@@ -11,6 +12,10 @@ from discord.ext.commands import Bot
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
 BOT_PREFIX = '.'
 client = Bot(command_prefix=BOT_PREFIX)
+
+reddit = praw.Reddit(client_id='y4QgcvDtchCuoA',
+                     client_secret='VQrBWpVzb09X1v-W5Bgh62bYoOU',
+                     user_agent='prawtutorialv1')
 
 
 @client.event
@@ -121,6 +126,22 @@ async def join(ctx):
 async def leave(ctx):
     vc = await client.join_voice_channel(ctx.message.author.voice_channel)
     await vc.disconnect()
+
+
+@client.command()
+async def top_posts(post):
+    post_sub = reddit.subreddit(post)
+    hot_posts = post_sub.hot()
+    for submission in hot_posts:
+        if not submission.stickied:
+            embed = discord.Embed(
+                colour=discord.Colour.blue()
+            )
+
+            embed.set_author(name='Hot Posts In: ' + post)
+            embed.add_field(name=submission.title, value='Upvotes: ' + submission.ups + ', ' + 'Downvotes: ' + submission.downs, inline=False)
+
+            await client.say(embed=embed)
 
 
 client.loop.create_task(list_servers())

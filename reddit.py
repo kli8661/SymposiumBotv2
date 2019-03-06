@@ -16,8 +16,13 @@ reddit = praw.Reddit(client_id='y4QgcvDtchCuoA',
                      user_agent='prawtutorialv1')
 
 
-@client.command()
-async def top_posts(post):
+@client.command(name='top_posts',
+                description='Grabs the top posts from a subreddit of the users choice.',
+                brief='Grabs top posts.',
+                alias=['tpost'],
+                pass_context=True)
+async def top_posts(ctx, post):
+    channel = ctx.message.channel
     post_sub = reddit.subreddit(post)
     hot_posts = post_sub.hot()
     for submission in hot_posts:
@@ -27,9 +32,10 @@ async def top_posts(post):
             )
 
             embed.set_author(name='Hot Posts In: ' + post)
-            embed.add_field(name=submission.title, value='Upvotes: ' + submission.ups + ', ' + 'Downvotes: ' + submission.downs, inline=False)
+            embed.add_field(name=submission.title, value='Upvotes: ' +
+                            submission.ups + ', ' + 'Downvotes: ' + submission.downs, inline=False)
 
-            await client.say(embed=embed)
+            await client.send_message(channel, embed=embed)
 
 
 # @client.command(name='rimage',

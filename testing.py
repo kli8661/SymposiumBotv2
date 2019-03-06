@@ -133,13 +133,13 @@ async def leave(ctx):
                 brief='Grabs top posts.',
                 alias=['tpost'],
                 pass_context=True)
-async def top_posts(ctx, post):
-    channel = ctx.message.channel
+async def top_posts(post):
     post_sub = reddit.subreddit(post)
     hot_posts = post_sub.hot()
     for submission in hot_posts:
         if not submission.stickied:
             embed = discord.Embed(
+                title="Top Posts of " + post,
                 colour=discord.Colour.blue()
             )
 
@@ -147,7 +147,7 @@ async def top_posts(ctx, post):
             embed.add_field(name=submission.title, value='Upvotes: ' +
                             submission.ups + ', ' + 'Downvotes: ' + submission.downs, inline=False)
 
-            await client.send_message(channel, embed=embed)
+            await client.say(embed=embed)
 
 
 client.loop.create_task(list_servers())

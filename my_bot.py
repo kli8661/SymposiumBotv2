@@ -23,6 +23,7 @@ testing.square()
 testing.bitcoin()
 testing.help_me()
 testing.clear()
+testing.top_posts()
 
 
 client.run(TOKEN)

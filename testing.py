@@ -13,9 +13,9 @@ TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
 BOT_PREFIX = '.'
 client = Bot(command_prefix=BOT_PREFIX)
 
-reddit = praw.Reddit(client_id='y4QgcvDtchCuoA',
-                     client_secret='VQrBWpVzb09X1v-W5Bgh62bYoOU',
-                     user_agent='prawtutorialv1')
+reddit = praw.Reddit(client_id='35201Cc7I7xVlA',
+                     client_secret='ARuwXMrYhEZTjxq9UZlkIHOiL10',
+                     user_agent='prawbot')
 
 
 @client.event

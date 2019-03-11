@@ -8,7 +8,7 @@ from discord.ext.commands import Bot
 # urlsuffix = "/random.json"
 # count = 0
 
-TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
+TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
 client = Bot(command_prefix=BOT_PREFIX)
 reddit = praw.Reddit(client_id='y4QgcvDtchCuoA',

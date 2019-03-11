@@ -3,7 +3,7 @@ from googleapiclient.discovery import build
 from discord.ext.commands import Bot
 
 
-TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D1SSSw.7QQpBnTcpERWKobvCn2J_zOZAAg'
+TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
 
 m_api_key = 'AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4'

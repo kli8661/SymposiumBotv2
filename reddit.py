@@ -21,21 +21,21 @@ reddit = praw.Reddit(client_id='y4QgcvDtchCuoA',
                 brief='Grabs top posts.',
                 alias=['tpost'],
                 pass_context=True)
-async def top_posts(post):
+async def top_posts(ctx, post):
+    channel = ctx.message.channel
     post_sub = reddit.subreddit(post)
-    hot_posts = post_sub.hot()
+    hot_posts = post_sub.hot(limit=12)
+    embed = discord.Embed(
+        author=post,
+        title='Top Posts',
+        colour=discord.Colour.blue()
+    )
     for submission in hot_posts:
         if not submission.stickied:
-            embed = discord.Embed(
-                title="Top Posts of " + post,
-                colour=discord.Colour.blue()
-            )
-
-            embed.set_author(name='Hot Posts In: ' + post)
             embed.add_field(name=submission.title, value='Upvotes: ' +
                             submission.ups + ', ' + 'Downvotes: ' + submission.downs, inline=False)
 
-            await client.say(embed=embed)
+            await client.send_message(channel, embed=embed)
 
 
 # @client.command(name='rimage',

@@ -15,7 +15,7 @@ client = Bot(command_prefix=BOT_PREFIX)
 
 reddit = praw.Reddit(client_id='35201Cc7I7xVlA',
                      client_secret='ARuwXMrYhEZTjxq9UZlkIHOiL10',
-                     user_agent='prawbot')
+                     user_agent='praw_bot')
 
 
 @client.event
@@ -132,11 +132,12 @@ async def leave(ctx):
                 description='Grabs the hot posts from a subreddit of the users choice.',
                 brief='Grabs hot posts from subreddit.',
                 pass_context=True)
-async def hot_posts(ctx, subreddit):
+async def hot_posts(ctx, subreddit, limit):
     subreddit = subreddit
+    limit = limit
     channel = ctx.message.channel
     post_sub = reddit.subreddit(subreddit)
-    hot = post_sub.hot(limit=12)
+    hot = post_sub.hot(limit=limit)
     embed = discord.Embed(
         author=subreddit,
         title='Top Posts',

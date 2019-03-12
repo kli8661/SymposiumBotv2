@@ -128,24 +128,24 @@ async def leave(ctx):
     await vc.disconnect()
 
 
-@client.command(name='top_posts',
-                description='Grabs the top posts from a subreddit of the users choice.',
-                brief='Grabs top posts.',
+@client.command(name='hot_posts',
+                description='Grabs the hot posts from a subreddit of the users choice.',
+                brief='Grabs hot posts from subreddit.',
                 pass_context=True)
-async def top_posts(ctx, subreddit):
+async def hot_posts(ctx, subreddit):
     subreddit = subreddit
     channel = ctx.message.channel
     post_sub = reddit.subreddit(subreddit)
-    hot_posts = post_sub.hot(limit=12)
+    hot = post_sub.hot(limit=12)
     embed = discord.Embed(
         author=subreddit,
         title='Top Posts',
         colour=discord.Colour.blue()
     )
 
-    for submission in hot_posts:
+    for submission in hot:
         if not submission.stickied:
-            embed.add_field(name=str(submission.title), value='Upvotes: ' +
+            embed.add_field(name=str(submission.title), value='URL: ' + str(submission.url) + '\n' + 'Upvotes: ' +
                             str(submission.ups) + ', ' + 'Downvotes: ' + str(submission.downs), inline=False)
 
     await client.send_message(channel, embed=embed)

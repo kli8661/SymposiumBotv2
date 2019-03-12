@@ -148,7 +148,7 @@ async def hot_posts(ctx, subreddit, amount):
 
     for submission in hot:
         if not submission.stickied:
-            ratio = reddit.submission(submission.permalink).upvote_ratio
+            ratio = submission.upvote_ratio
             upvote = round((ratio * submission.score)/(2 * ratio - 1)) if ratio != 0.5 else round(submission.score/2)
             downvote = upvote - submission.score
             embed.add_field(name=str(submission.title), value='URL: ' + str(submission.url) + '\n' + 'Upvotes: ' +

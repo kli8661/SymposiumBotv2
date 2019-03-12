@@ -14,7 +14,7 @@ reddit = praw.Reddit(client_id='35201Cc7I7xVlA',
 
 @client.command(name='hot_posts',
                 description='Grabs the hot posts from a subreddit of the users choice.',
-                brief='Grabs hot posts from subreddit.',
+                brief='Grabs hot posts from subreddit. \n[.hot_posts <subreddit> <number of posts>]',
                 pass_context=True)
 async def hot_posts(ctx, subreddit, amount):
     subreddit = subreddit
@@ -30,8 +30,11 @@ async def hot_posts(ctx, subreddit, amount):
 
     for submission in hot:
         if not submission.stickied:
+            ratio = reddit.submission(submission.permalink).upvote_ratio
+            upvote = round((ratio * submission.score)/(2 * ratio - 1)) if ratio != 0.5 else round(submission.score/2)
+            downvote = upvote - submission.score
             embed.add_field(name=str(submission.title), value='URL: ' + str(submission.url) + '\n' + 'Upvotes: ' +
-                            str(submission.ups) + ', ' + 'Downvotes: ' + str(submission.downs), inline=False)
+                            str(submission.ups) + ', ' + 'Downvotes: ' + str(downvote), inline=False)
 
     await client.send_message(channel, embed=embed)
 

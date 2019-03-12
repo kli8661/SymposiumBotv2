@@ -33,7 +33,7 @@ async def ping():
 
 @client.command(name='8ball',
                 description="Answers a yes/no question.",
-                brief="Answers from the beyond. .8ball <question>",
+                brief="Answers from the beyond. \n[.8ball <question>]",
                 aliases=['eight_ball', 'eightball', '8-ball'],
                 pass_context=True)
 async def eight_ball(context):
@@ -51,7 +51,7 @@ async def eight_ball(context):
 
 @client.command(name='clear',
                 description='Clears the amount of lines in the text channel the user wants.',
-                brief='Clears a certain amount of messages. clear <amount>',
+                brief='Clears a certain amount of messages. \n[.clear <amount>]',
                 pass_context=True)
 async def clear(context, amount):
     amount = amount
@@ -65,7 +65,7 @@ async def clear(context, amount):
 
 @client.command(name='square',
                 description="Squares a number.",
-                brief="Squares a number. .square <number>")
+                brief="Squares a number. \n[.square <number>]")
 async def square(number):
     squared_value = int(number) * int(number)
     await client.say(str(number) + " squared is " + str(squared_value))
@@ -132,7 +132,7 @@ async def leave(ctx):
 
 @client.command(name='hot_posts',
                 description='Grabs the hot posts from a subreddit of the users choice.',
-                brief='Grabs hot posts from subreddit. .hot_posts <subreddit> <number of posts>',
+                brief='Grabs hot posts from subreddit. \n[.hot_posts <subreddit> <number of posts>]',
                 pass_context=True)
 async def hot_posts(ctx, subreddit, amount):
     subreddit = subreddit
@@ -148,8 +148,11 @@ async def hot_posts(ctx, subreddit, amount):
 
     for submission in hot:
         if not submission.stickied:
+            ratio = reddit.submission(submission.permalink).upvote_ratio
+            upvote = round((ratio * submission.score)/(2 * ratio - 1)) if ratio != 0.5 else round(submission.score/2)
+            downvote = upvote - submission.score
             embed.add_field(name=str(submission.title), value='URL: ' + str(submission.url) + '\n' + 'Upvotes: ' +
-                            str(submission.ups) + ', ' + 'Downvotes: ' + str(submission.downs), inline=False)
+                            str(submission.ups) + ', ' + 'Downvotes: ' + str(downvote), inline=False)
 
     await client.send_message(channel, embed=embed)
 

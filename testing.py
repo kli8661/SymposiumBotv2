@@ -161,20 +161,19 @@ async def hot_posts(ctx, subreddit, amount):
                 description='Searches reddit.',
                 brief='Searches reddit. \n[.rsearch <query> <amount>]',
                 pass_context=True)
-async def rsearch(ctx, query, amount):
+async def rsearch(ctx, query):
     channel = ctx.message.channel
     query = query
-    limit = int(amount)
     sub = reddit.subreddit('all')
     embed = discord.Embed(
         author=str(query),
         title='Search Results',
         colour=discord.Colour.blue()
     )
-    for i in sub.search(str(query), limit=limit):
-        embed.add_field(name=str(i) + str(i.title), value='URL: ' + str(i.url), inline=False)
+    for i in sub.search(str(query), limit=10):
+        embed.add_field(name=str(i.title), value='URL: ' + str(i.url), inline=False)
 
-    await client.send_message(channel,embed=embed)
+    await client.send_message(channel, embed=embed)
 
 client.loop.create_task(list_servers())
 client.run(TOKEN)

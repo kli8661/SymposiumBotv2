@@ -16,9 +16,9 @@ reddit = praw.Reddit(client_id='35201Cc7I7xVlA',
                 description='Grabs the hot posts from a subreddit of the users choice.',
                 brief='Grabs hot posts from subreddit.',
                 pass_context=True)
-async def hot_posts(ctx, subreddit, limit):
+async def hot_posts(ctx, subreddit, amount):
     subreddit = subreddit
-    limit = limit
+    limit = int(amount)
     channel = ctx.message.channel
     post_sub = reddit.subreddit(subreddit)
     hot = post_sub.hot(limit=limit)

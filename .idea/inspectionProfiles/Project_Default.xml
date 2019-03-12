@@ -5,6 +5,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="discord.message.Message.__await__" />
+          <option value="discord.voice_client.VoiceClient.*" />
         </list>
       </option>
     </inspection_tool>

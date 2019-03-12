@@ -30,44 +30,12 @@ async def top_posts(ctx, subreddit):
         title='Top Posts',
         colour=discord.Colour.blue()
     )
+
     for submission in hot_posts:
         if not submission.stickied:
             embed.add_field(name=str(submission.title), value='Upvotes: ' +
                             str(submission.ups) + ', ' + 'Downvotes: ' + str(submission.downs), inline=False)
 
-            await client.send_message(channel, embed=embed)
-
-
-# @client.command(name='rimage',
-#                 description="Grabs image from user subreddit.",
-#                 brief="Grabs image from subreddit.",
-#                 pass_context=True)
-# async def rimage(sub):
-#     while True:
-#         subreddit = sub.content[7:]
-#         subtest = urlprefix + subreddit + '.json'
-#         response = http.request('GET', subtest)
-#         check = response.data
-#         parse = json.loads(check)
-#         if parse['data']['dist'] == 0:
-#             await client.send_message(sub.channel, 'That subreddit does not exist!')
-#             return
-#         url = urlprefix + subreddit + urlsuffix
-#         while True:
-#             response = http.request('GET', url)
-#             jsonparse = json.loads(response.data.decode('utf-8'))
-#             image = jsonparse[0]['data']['children'][0]['data']['url']
-#             if image.endswith('.png') or image.endswith('jpeg') or image.endswith('jpg') or image.endswith('gif'):
-#                 await client.send_message(sub.channel, image)
-#                 return
-#             else:
-#                 global count
-#                 count += 1
-#             if count == 10:
-#                 await client.send_message(sub.channel, 'No image found.')
-#                 return
-#           await client.send_message(sub.channel, 'Try command !rimage subreddit')
-#            return
-
+    await client.send_message(channel, embed=embed)
 
 client.run(TOKEN)

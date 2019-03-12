@@ -142,12 +142,13 @@ async def top_posts(ctx, subreddit):
         title='Top Posts',
         colour=discord.Colour.blue()
     )
+
     for submission in hot_posts:
         if not submission.stickied:
             embed.add_field(name=str(submission.title), value='Upvotes: ' +
                             str(submission.ups) + ', ' + 'Downvotes: ' + str(submission.downs), inline=False)
 
-            await client.send_message(channel, embed=embed)
+    await client.send_message(channel, embed=embed)
 
 
 client.loop.create_task(list_servers())

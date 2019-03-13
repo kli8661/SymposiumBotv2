@@ -40,19 +40,20 @@ async def hot_posts(ctx, subreddit, amount):
 
 
 @client.command(name='rsearch',
-                description='Searches reddit.',
-                brief='Searches reddit. \n[.rsearch <query>]',
+                description='Searches reddit. Replace space with _.',
+                brief='Searches reddit. \n[.rsearch <example_search>]',
                 pass_context=True)
 async def rsearch(ctx, query):
     channel = ctx.message.channel
-    query = str(query)
+    querystr = str(query).replace("_", " ")
+    print(querystr)
     sub = reddit.subreddit('all')
     embed = discord.Embed(
-        author=str(query),
-        title='Search Results For: ' + str(query),
+        author=querystr,
+        title='Search Results For: ' + querystr,
         colour=discord.Colour.blue()
     )
-    for i in sub.search(str(query), limit=10):
+    for i in sub.search(querystr, limit=5):
         embed.add_field(name=str(i.title), value='URL: ' + str(i.url), inline=False)
 
     await client.send_message(channel, embed=embed)

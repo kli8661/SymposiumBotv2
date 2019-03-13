@@ -159,11 +159,11 @@ async def hot_posts(ctx, subreddit, amount):
 
 @client.command(name='rsearch',
                 description='Searches reddit. Replace space with _.',
-                brief='Searches reddit. \n[.rsearch <example_search>]',
+                brief='Searches reddit. \n[.rsearch <example search>]',
                 pass_context=True)
-async def rsearch(ctx, query):
+async def rsearch(ctx, *, query):
     channel = ctx.message.channel
-    querystr = str(query).replace("_", " ")
+    querystr = str(query)
     print(querystr)
     sub = reddit.subreddit('all')
     embed = discord.Embed(

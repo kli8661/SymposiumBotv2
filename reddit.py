@@ -41,15 +41,15 @@ async def hot_posts(ctx, subreddit, amount):
 
 @client.command(name='rsearch',
                 description='Searches reddit.',
-                brief='Searches reddit. \n[.rsearch <query> <amount>]',
+                brief='Searches reddit. \n[.rsearch <query>]',
                 pass_context=True)
 async def rsearch(ctx, query):
     channel = ctx.message.channel
-    query = query
+    query = str(query)
     sub = reddit.subreddit('all')
     embed = discord.Embed(
         author=str(query),
-        title='Search Results',
+        title='Search Results For: ' + str(query),
         colour=discord.Colour.blue()
     )
     for i in sub.search(str(query), limit=10):

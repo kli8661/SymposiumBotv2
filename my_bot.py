@@ -24,6 +24,7 @@ testing.bitcoin()
 testing.help_me()
 testing.clear()
 testing.hot_posts()
-
+testing.rsearch()
+testing.timeout_error()
 
 client.run(TOKEN)

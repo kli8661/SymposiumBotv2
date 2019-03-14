@@ -1,6 +1,7 @@
 # Kent Reddit Bot
 
 import discord
+from discord.ext import commands
 import praw
 from discord.ext.commands import Bot
 
@@ -16,7 +17,9 @@ reddit = praw.Reddit(client_id='35201Cc7I7xVlA',
                 description='Grabs the hot posts from a subreddit of the users choice.',
                 brief='Grabs hot posts from subreddit. \n[.hot_posts <subreddit> <number of posts>]',
                 pass_context=True)
+@commands.cooldown(1.0, 5.0, commands.BucketType.user)
 async def hot_posts(ctx, subreddit, amount):
+    hot_posts.has_been_called = True
     subreddit = subreddit
     limit = int(amount)
     channel = ctx.message.channel
@@ -43,7 +46,9 @@ async def hot_posts(ctx, subreddit, amount):
                 description='Searches reddit. Replace space with _.',
                 brief='Searches reddit. \n[.rsearch <example search>]',
                 pass_context=True)
+@commands.cooldown(1.0, 5.0, commands.BucketType.user)
 async def rsearch(ctx, *, query):
+    rsearch.has_been_called = True
     channel = ctx.message.channel
     querystr = str(query)
     print(querystr)
@@ -57,6 +62,16 @@ async def rsearch(ctx, *, query):
         embed.add_field(name=str(i.title), value='URL: ' + str(i.url), inline=False)
 
     await client.send_message(channel, embed=embed)
+
+
+@rsearch.error
+@hot_posts.error
+async def timeout_error(error, ctx):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'You can use this every 5 seconds, please try again in {:.2f}s'.format(error.retry_after)
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
 
 
 client.run(TOKEN)

@@ -7,6 +7,7 @@ import aiohttp
 import json
 import discord
 from discord import Game
+from discord.ext import commands
 from discord.ext.commands import Bot
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
@@ -44,7 +45,9 @@ async def eight_ball(context):
         'It is quite possible',
         'Definitely',
         'Impossible',
-        'Try asking a better question'
+        'Try asking a better question',
+        'Certainly',
+        'Of Course'
     ]
     await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
 
@@ -134,7 +137,9 @@ async def leave(ctx):
                 description='Grabs the hot posts from a subreddit of the users choice.',
                 brief='Grabs hot posts from subreddit. \n[.hot_posts <subreddit> <number of posts>]',
                 pass_context=True)
+@commands.cooldown(1.0, 5.0, commands.BucketType.user)
 async def hot_posts(ctx, subreddit, amount):
+    hot_posts.has_been_called = True
     subreddit = subreddit
     limit = int(amount)
     channel = ctx.message.channel
@@ -161,7 +166,9 @@ async def hot_posts(ctx, subreddit, amount):
                 description='Searches reddit. Replace space with _.',
                 brief='Searches reddit. \n[.rsearch <example search>]',
                 pass_context=True)
+@commands.cooldown(1.0, 5.0, commands.BucketType.user)
 async def rsearch(ctx, *, query):
+    rsearch.has_been_called = True
     channel = ctx.message.channel
     querystr = str(query)
     print(querystr)
@@ -175,6 +182,17 @@ async def rsearch(ctx, *, query):
         embed.add_field(name=str(i.title), value='URL: ' + str(i.url), inline=False)
 
     await client.send_message(channel, embed=embed)
+
+
+@rsearch.error
+@hot_posts.error
+async def timeout_error(error, ctx):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'You can use this every 5 seconds, please try again in {:.2f}s'.format(error.retry_after)
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
 
 client.loop.create_task(list_servers())
 client.run(TOKEN)

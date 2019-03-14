@@ -186,7 +186,7 @@ async def rsearch(ctx, *, query):
 @hot_posts.error
 async def timeout_error(error, ctx):
     if isinstance(error, commands.CommandOnCooldown):
-        msg = 'You can use this every 5 seconds, please try again in {:.2f}s'.format(error.retry_after)
+        msg = 'You can use this every 10 seconds, please try again in {:.2f}s'.format(error.retry_after)
         await client.send_message(ctx.message.channel, msg)
     else:
         raise error

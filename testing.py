@@ -146,10 +146,14 @@ async def hot_posts(ctx, subreddit, amount):
         subreddit = subreddit
     else:
         await client.send_message(channel, "This subreddit doesn't exist!")
+
     if re.search(r'/\b(0?[1-9]|1[0-9]|2[0-5])\b/g', amount):
         limit = int(amount)
+    elif amount > 25:
+        limit = 25
     else:
         await client.send_message(channel, "Input a number from 1-25!")
+
     post_sub = reddit.subreddit(subreddit)
     hot = post_sub.hot(limit=limit)
     embed = discord.Embed(

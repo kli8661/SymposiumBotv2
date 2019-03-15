@@ -14,18 +14,20 @@ async def on_message(message):
         return
 
 testing.on_ready()
-testing.list_servers()
-testing.join()
-testing.leave()
 testing.ping()
 testing.eight_ball()
+testing.clear()
 testing.square()
 testing.bitcoin()
 testing.help_me()
-testing.clear()
+testing.list_servers()
+testing.join()
+testing.leave()
 testing.hot_posts()
 testing.rsearch()
 testing.timeout_error()
 testing.on_command_error()
+# sub_exists()
+
 
 client.run(TOKEN)

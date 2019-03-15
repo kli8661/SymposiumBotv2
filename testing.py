@@ -9,7 +9,7 @@ import discord
 from discord import Game
 from discord.ext import commands
 from discord.ext.commands import Bot
-from discord.ext.commands import CommandNotFound
+from prawcore import NotFound
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
@@ -140,9 +140,12 @@ async def leave(ctx):
                 pass_context=True)
 @commands.cooldown(1.0, 10.0, commands.BucketType.user)
 async def hot_posts(ctx, subreddit, amount):
-    subreddit = subreddit
-    limit = int(amount)
     channel = ctx.message.channel
+    if sub_exists(subreddit):
+        subreddit = subreddit
+    else:
+        await client.send_message(channel, "This subreddit doesn't exist!")
+    limit = int(amount)
     post_sub = reddit.subreddit(subreddit)
     hot = post_sub.hot(limit=limit)
     embed = discord.Embed(
@@ -199,6 +202,15 @@ async def on_command_error(error, ctx):
         await client.send_message(ctx.message.channel, 'Cannot find this command!')
     else:
         raise error
+
+
+def sub_exists(sub):
+    exists = True
+    try:
+        reddit.subreddits.search_by_name(sub, include_nsfw=True, exact=True)
+    except NotFound:
+        exists = False
+    return exists
 
 
 client.loop.create_task(list_servers())

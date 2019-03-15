@@ -1,5 +1,6 @@
 # Here are some general/testing methods that were worked on by all of us.
 
+import re
 import praw
 import random
 import asyncio
@@ -145,7 +146,10 @@ async def hot_posts(ctx, subreddit, amount):
         subreddit = subreddit
     else:
         await client.send_message(channel, "This subreddit doesn't exist!")
-    limit = int(amount)
+    if re.search(r'/\b(0?[1-9]|1[0-9]|2[0-5])\b/g', amount):
+        limit = int(amount)
+    else:
+        await client.send_message(channel, "Input a number from 1-25!")
     post_sub = reddit.subreddit(subreddit)
     hot = post_sub.hot(limit=limit)
     embed = discord.Embed(

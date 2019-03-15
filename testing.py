@@ -9,6 +9,7 @@ import discord
 from discord import Game
 from discord.ext import commands
 from discord.ext.commands import Bot
+from discord.ext.commands import CommandNotFound
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
@@ -188,6 +189,14 @@ async def timeout_error(error, ctx):
     if isinstance(error, commands.CommandOnCooldown):
         msg = 'You can use this every 10 seconds, please try again in {:.2f}s'.format(error.retry_after)
         await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
+
+@client.event
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.CommandNotFound):
+        await client.send_message(ctx.message.channel, 'Cannot find this command!')
     else:
         raise error
 

@@ -26,5 +26,6 @@ testing.clear()
 testing.hot_posts()
 testing.rsearch()
 testing.timeout_error()
+testing.on_command_error()
 
 client.run(TOKEN)

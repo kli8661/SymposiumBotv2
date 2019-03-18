@@ -1,10 +1,10 @@
 # Kent Reddit Bot
 
-import discord
 import re
-from discord.ext import commands
 import praw
+import discord
 from prawcore import NotFound
+from discord.ext import commands
 from discord.ext.commands import Bot
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
@@ -26,16 +26,9 @@ async def hot_posts(ctx, subreddit, amount):
         subreddit = subreddit
     else:
         await client.send_message(channel, "This subreddit doesn't exist!")
-
-    if re.search(r'/\b(0?[1-9]|1[0-9]|2[0-5])\b/g', amount):
-        limit = int(amount)
-    elif amount > 25:
-        limit = 25
-    else:
-        await client.send_message(channel, "Input a number from 1-25!")
-
+    limit = int(amount)
     post_sub = reddit.subreddit(subreddit)
-    hot = post_sub.hot(limit=limit)
+    hot = post_sub.hot(limit=limit + 2)
     embed = discord.Embed(
         author=subreddit,
         title='Top Posts',
@@ -90,6 +83,14 @@ def sub_exists(sub):
         reddit.subreddits.search_by_name(sub, include_nsfw=True, exact=True)
     except NotFound:
         exists = False
+    return exists
+
+
+def check_for_number(number):
+    exists = False
+    x = re.search('\b(0?[1-9]|1[0-9]|2[0-5])\b', number)
+    if x:
+        exists = True
     return exists
 
 

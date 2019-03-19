@@ -1,6 +1,5 @@
 # Here are some general/testing methods that were worked on by all of us.
 
-import re
 import praw
 import random
 import asyncio
@@ -86,26 +85,6 @@ async def bitcoin():
         response = await raw_response.text()
         response = json.loads(response)
         await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
-
-# Fix this later
-
-
-@client.command(name='help_me',
-                description="Help but it sends a private message to you.",
-                brief="Private Help.",
-                aliases=['helpp', 'help_private'],
-                pass_context=True)
-async def help_me(ctx):
-    author = ctx.message.author
-
-    embed = discord.Embed(
-        colour=discord.Colour.blue()
-    )
-
-    embed.set_author(name='Help')
-    embed.add_field(name='.ping', value='Returns Pong!', inline=False)
-
-    await client.send_message(author, embed=embed)
 
 
 async def list_servers():
@@ -205,6 +184,15 @@ async def on_command_error(error, ctx):
         raise error
 
 
+@hot_posts.error
+async def value_error(error, ctx):
+    if isinstance(error, commands.CommandInvokeError):
+        msg = 'Use a number from 1-25.'
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
+
 def sub_exists(sub):
     exists = True
     try:
@@ -214,13 +202,15 @@ def sub_exists(sub):
     return exists
 
 
-def check_for_number(number):
-    exists = False
-    x = re.search('\b(0?[1-9]|1[0-9]|2[0-5])\b', number)
-    if x:
-        exists = True
-        print(str(exists))
-    return exists
+@square.error
+@hot_posts.error
+@rsearch.error
+async def missing_argument_error(error, ctx):
+    if isinstance(error, commands.MissingRequiredArgument):
+        msg = 'Put something in please.'
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
 
 
 client.loop.create_task(list_servers())

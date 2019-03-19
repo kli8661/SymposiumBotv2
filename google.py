@@ -39,7 +39,7 @@ m_cx_key = '008921493878794350931:tioeliy7j1y'
                 result = json.loads(await resp.txt())
                 return await ctx.send(result['items'][['link']]['snippet'])
 
-        # return return the snippet section of the links + website
+        # return return the snippet section of the links + websites
 
 client = Bot(command_prefix=BOT_PREFIX)
 client.run(TOKEN)

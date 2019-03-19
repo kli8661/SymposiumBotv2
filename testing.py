@@ -86,26 +86,6 @@ async def bitcoin():
         response = json.loads(response)
         await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
 
-# Fix this later
-
-
-@client.command(name='help_me',
-                description="Help but it sends a private message to you.",
-                brief="Private Help.",
-                aliases=['helpp', 'help_private'],
-                pass_context=True)
-async def help_me(ctx):
-    author = ctx.message.author
-
-    embed = discord.Embed(
-        colour=discord.Colour.blue()
-    )
-
-    embed.set_author(name='Help')
-    embed.add_field(name='.ping', value='Returns Pong!', inline=False)
-
-    await client.send_message(author, embed=embed)
-
 
 async def list_servers():
     await client.wait_until_ready()
@@ -222,6 +202,7 @@ def sub_exists(sub):
     return exists
 
 
+@square.error
 @hot_posts.error
 @rsearch.error
 async def missing_argument_error(error, ctx):

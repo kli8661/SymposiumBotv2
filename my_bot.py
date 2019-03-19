@@ -28,6 +28,7 @@ testing.rsearch()
 testing.timeout_error()
 testing.on_command_error()
 testing.value_error()
+testing.missing_argument_error()
 # sub_exists()
 
 

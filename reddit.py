@@ -1,6 +1,5 @@
 # Kent Reddit Bot
 
-import re
 import praw
 import discord
 from prawcore import NotFound
@@ -81,6 +80,16 @@ async def timeout_error(error, ctx):
 async def value_error(error, ctx):
     if isinstance(error, commands.CommandInvokeError):
         msg = 'Use a number from 1-25.'
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
+
+@hot_posts.error
+@rsearch.error
+async def missing_argument_error(error, ctx):
+    if isinstance(error, commands.MissingRequiredArgument):
+        msg = 'Put something in please.'
         await client.send_message(ctx.message.channel, msg)
     else:
         raise error

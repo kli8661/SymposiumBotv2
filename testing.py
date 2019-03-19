@@ -1,6 +1,5 @@
 # Here are some general/testing methods that were worked on by all of us.
 
-import re
 import praw
 import random
 import asyncio
@@ -221,6 +220,16 @@ def sub_exists(sub):
     except NotFound:
         exists = False
     return exists
+
+
+@hot_posts.error
+@rsearch.error
+async def missing_argument_error(error, ctx):
+    if isinstance(error, commands.MissingRequiredArgument):
+        msg = 'Put something in please.'
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
 
 
 client.loop.create_task(list_servers())

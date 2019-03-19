@@ -205,21 +205,21 @@ async def on_command_error(error, ctx):
         raise error
 
 
+@hot_posts.error
+async def value_error(error, ctx):
+    if isinstance(error, commands.CommandInvokeError):
+        msg = 'Use a number from 1-25.'
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
+
 def sub_exists(sub):
     exists = True
     try:
         reddit.subreddits.search_by_name(sub, include_nsfw=True, exact=True)
     except NotFound:
         exists = False
-    return exists
-
-
-def check_for_number(number):
-    exists = False
-    x = re.search('\b(0?[1-9]|1[0-9]|2[0-5])\b', number)
-    if x:
-        exists = True
-        print(str(exists))
     return exists
 
 

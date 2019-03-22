@@ -1,5 +1,5 @@
 aiohttp
-requests
+cogs
 discord
 discord.py
 discord.py[voice]

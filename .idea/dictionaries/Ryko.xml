@@ -4,6 +4,8 @@
       <w>prawcore</w>
       <w>querystr</w>
       <w>rsearch</w>
+      <w>subredditlist</w>
+      <w>subreddits</w>
     </words>
   </dictionary>
 </component>

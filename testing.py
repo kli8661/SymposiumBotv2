@@ -6,7 +6,9 @@ import asyncio
 import aiohttp
 import json
 import discord
+import requests
 from discord import Game
+from bs4 import BeautifulSoup
 from discord.ext import commands
 from discord.ext.commands import Bot
 from prawcore import NotFound
@@ -212,6 +214,50 @@ async def missing_argument_error(error, ctx):
         await client.send_message(ctx.message.channel, msg)
     else:
         raise error
+
+
+@client.command(name='r_meme',
+                description='Grab memes from subreddits.',
+                brief='Grabs memes.',
+                pass_context=True)
+async def r_meme(ctx):
+    channel = ctx.message.channel
+    subredditlist = ['dankmemes', 'memes', 'deepfriedmemes', 'nukedmemes',
+                     'surrealmemes', 'wholesomememes', 'comedycemetery']
+    sub = random.choice(subredditlist)
+    post_sub = reddit.subreddit(sub)
+    posts = [post for post in post_sub.hot(limit=20)]
+    random_post_number = random.randint(0, 20)
+    random_post = posts[random_post_number]
+    url = random_post.url
+    img_extension = ('jpg', 'jpeg', 'png', 'gif')
+    if url.endswith(img_extension):
+        yield url
+    elif 'imgur' in url and ('/a/' in url or '/gallery/' in url):
+        r = requests.get(url).text
+        soup_ob = BeautifulSoup(r, 'html.parser')
+        for link in soup_ob.find_all('div', {'class': 'post-image'}):
+            try:
+                partial_link = link.img.get('src')
+                url = 'https:' + partial_link
+                yield url
+            except:
+                pass
+    else:
+        raw_url = url + '.jpg'
+        try:
+            r = requests.get(raw_url)
+            r.raise_for_status()
+            extension = r.headers['content-type'].split('/')[-1]
+        except Exception as e:
+            extension = ''
+        if extension in img_extension:
+            link = '{url}.{ext}'.format(url=url, ext=extension)
+            yield link
+
+    image = link
+    print(image)
+    await client.send_message(channel, link)
 
 
 client.loop.create_task(list_servers())

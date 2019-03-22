@@ -1,4 +1,5 @@
 aiohttp
+requests
 discord
 discord.py
 discord.py[voice]

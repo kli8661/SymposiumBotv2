@@ -235,7 +235,7 @@ async def r_meme(ctx):
     print(url)
     if url.endswith('.jpg') | url.endswith('.jpeg') | url.endswith('.png') | url.endswith('gif'):
         if not random_post.stickied:
-            await client.send_message(channel, url)
+            await client.send_message(channel, sub + '\n' + url)
     else:
         await r_meme()
 

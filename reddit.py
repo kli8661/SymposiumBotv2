@@ -115,17 +115,18 @@ async def r_meme(ctx):
     channel = ctx.message.channel
     import random
     subredditlist = ['dankmemes', 'memes', 'deepfriedmemes', 'nukedmemes',
-                     'surrealmemes', 'wholesomememes', 'comedycemetery']
+                     'surrealmemes', 'wholesomememes', 'comedycemetery', 'me_irl']
     sub = random.choice(subredditlist)
     print(sub)
     post_sub = reddit.subreddit(sub)
-    posts = [post for post in post_sub.hot(limit=20)]
-    random_post_number = random.randint(0, 20)
+    posts = [post for post in post_sub.new(limit=100)]
+    random_post_number = random.randint(0, 100)
     random_post = posts[random_post_number]
     url = random_post.url
     print(url)
     if url.endswith('.jpg') | url.endswith('.jpeg') | url.endswith('.png') | url.endswith('gif'):
-        await client.send_message(channel, url)
+        if not random_post.stickied:
+            await client.send_message(channel, url)
     else:
         await r_meme()
 

@@ -69,16 +69,6 @@ async def rsearch(ctx, *, query):
     await client.send_message(channel, embed=embed)
 
 
-@rsearch.error
-@hot_posts.error
-async def timeout_error(error, ctx):
-    if isinstance(error, commands.CommandOnCooldown):
-        msg = 'You can use this every 5 seconds, please try again in {:.2f}s'.format(error.retry_after)
-        await client.send_message(ctx.message.channel, msg)
-    else:
-        raise error
-
-
 @hot_posts.error
 async def value_error(error, ctx):
     if isinstance(error, commands.CommandInvokeError):
@@ -111,6 +101,7 @@ def sub_exists(sub):
                 description='Grabs memes.',
                 brief='Grabs memes from meme subreddits.',
                 pass_context=True)
+@commands.cooldown(1.0, 2.0, commands.BucketType.user)
 async def r_meme(ctx):
     channel = ctx.message.channel
     import random
@@ -129,5 +120,16 @@ async def r_meme(ctx):
             await client.send_message(channel, sub + '\n' + url)
     else:
         await r_meme()
+
+
+@r_meme.error
+@rsearch.error
+@hot_posts.error
+async def timeout_error(error, ctx):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'You can use this every 5 seconds, please try again in {:.2f}s'.format(error.retry_after)
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
 
 client.run(TOKEN)

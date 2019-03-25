@@ -115,7 +115,7 @@ async def r_meme(ctx):
     channel = ctx.message.channel
     import random
     subredditlist = ['dankmemes', 'memes', 'deepfriedmemes', 'nukedmemes',
-                     'surrealmemes', 'wholesomememes', 'comedycemetery', 'me_irl']
+                     'surrealmemes', 'wholesomememes', 'comedycemetery', 'me_irl', 'bonehurtingjuice']
     sub = random.choice(subredditlist)
     print(sub)
     post_sub = reddit.subreddit(sub)

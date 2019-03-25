@@ -49,7 +49,7 @@ async def hot_posts(ctx, subreddit, amount):
 
 
 @client.command(name='rsearch',
-                description='Searches reddit. Replace space with _.',
+                description='Searches reddit.',
                 brief='Searches reddit. \n[.rsearch <example search>]',
                 pass_context=True)
 @commands.cooldown(1.0, 10.0, commands.BucketType.user)
@@ -108,46 +108,25 @@ def sub_exists(sub):
 
 
 @client.command(name='r_meme',
-                description='Grab memes from subreddits.',
-                brief='Grabs memes.',
+                description='Grabs memes.',
+                brief='Grabs memes from meme subreddits.',
                 pass_context=True)
 async def r_meme(ctx):
     channel = ctx.message.channel
+    import random
     subredditlist = ['dankmemes', 'memes', 'deepfriedmemes', 'nukedmemes',
                      'surrealmemes', 'wholesomememes', 'comedycemetery']
     sub = random.choice(subredditlist)
+    print(sub)
     post_sub = reddit.subreddit(sub)
     posts = [post for post in post_sub.hot(limit=20)]
     random_post_number = random.randint(0, 20)
     random_post = posts[random_post_number]
     url = random_post.url
-    img_extension = ('jpg', 'jpeg', 'png', 'gif')
-    if url.endswith(img_extension):
-        yield url
-    elif 'imgur' in url and ('/a/' in url or '/gallery/' in url):
-        r = requests.get(url).text
-        soup_ob = BeautifulSoup(r, 'html.parser')
-        for link in soup_ob.find_all('div', {'class': 'post-image'}):
-            try:
-                partial_link = link.img.get('src')
-                url = 'https:' + partial_link
-                yield url
-            except:
-                pass
+    print(url)
+    if url.endswith('.jpg') | url.endswith('.jpeg') | url.endswith('.png') | url.endswith('gif'):
+        await client.send_message(channel, url)
     else:
-        raw_url = url + '.jpg'
-        try:
-            r = requests.get(raw_url)
-            r.raise_for_status()
-            extension = r.headers['content-type'].split('/')[-1]
-        except Exception as e:
-            extension = ''
-        if extension in img_extension:
-            link = '{url}.{ext}'.format(url=url, ext=extension)
-            yield link
-
-    image = link
-    print(image)
-    await client.send_message(channel, link)
+        await r_meme()
 
 client.run(TOKEN)

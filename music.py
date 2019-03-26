@@ -26,7 +26,7 @@ async def join(ctx):
         await client.say("I joined the voice channel: {}".format(channel))
 
 
-@client.command(name='leave',sad
+@client.command(name='leave',
                 description="Leaves voice channel.",
                 brief="Leaves voice channel."
                 , pass_context=True)

@@ -105,7 +105,14 @@ async def list_servers():
                 , pass_context=True)
 async def join(ctx):
     channel = ctx.message.author.voice.voice_channel
-    await client.join_voice_channel(channel)
+    server = ctx.message.server
+    vc = client.voice_client_in(server)
+    if client.is_voice_connected(server):
+        await vc.move_to(channel)
+        await client.say("I joined the voice channel: {}".format(channel))
+    else:
+        await client.join_voice_channel(channel)
+        await client.say("I joined the voice channel: {}".format(channel))
 
 
 @client.command(name='leave',

@@ -259,5 +259,13 @@ async def value_error(error, ctx):
         raise error
 
 
+@leave.error
+async def channel_error(error, ctx):
+    if isinstance(error, commands.CommandInvokeError):
+        await client.send_message(ctx.message.channel, 'Not in channel!')
+    else:
+        raise error
+
+
 client.loop.create_task(list_servers())
 client.run(TOKEN)

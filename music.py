@@ -28,21 +28,24 @@ async def join(ctx):
 
 @client.command(name='leave',
                 description="Leaves voice channel.",
-                brief="Leaves voice channel."
-                , pass_context=True)
+                brief="Leaves voice channel.",
+                pass_context=True)
 async def leave(ctx):
     server = ctx.message.server
     vc = client.voice_client_in(server)
     await vc.disconnect()
 
 
-@client.command(pass_context=True)
+@client.command(name='play',
+                description='Plays music.',
+                brief='Plays music. .play <URL>.',
+                pass_context=True)
 async def play(ctx, url, players=None):
-        server = ctx.message.server
-        voice_client = client.voice_client_in(server)
-        player = await  voice_client.create_ytdl_player(url)
-        players[server.id] = player
-        player.start()
+    server = ctx.message.server
+    voice_client = client.voice_client_in(server)
+    player = await voice_client.create_ytdl_player(url)
+    players[server.id] = player
+    player.start()
 
 
 @leave.error

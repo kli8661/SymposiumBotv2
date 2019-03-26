@@ -22,6 +22,7 @@
         <list>
           <option value="discord.message.Message.__await__" />
           <option value="discord.voice_client.VoiceClient.*" />
+          <option value="discord.voice_client.StreamPlayer.__await__" />
         </list>
       </option>
     </inspection_tool>

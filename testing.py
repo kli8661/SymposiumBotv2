@@ -210,7 +210,7 @@ async def missing_argument_error(error, ctx):
                 description='Grabs memes.',
                 brief='Grabs memes from meme subreddits.',
                 pass_context=True)
-@commands.cooldown(1.0, 2.0, commands.BucketType.user)
+@commands.cooldown(1.0, 3.0, commands.BucketType.user)
 async def r_meme(ctx):
     channel = ctx.message.channel
     import random
@@ -229,9 +229,9 @@ async def r_meme(ctx):
             await client.send_message(channel, sub + '\n' + url)
     else:
         await r_meme()
+        await client.send_message('Unable to find meme, please try again.')
 
 
-@r_meme.error
 @rsearch.error
 @hot_posts.error
 async def timeout_error(error, ctx):
@@ -240,6 +240,16 @@ async def timeout_error(error, ctx):
         await client.send_message(ctx.message.channel, msg)
     else:
         raise error
+
+
+@r_meme.error
+async def meme_antispam(error, ctx):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'You can use this every 3 seconds, please try again in {:.2f}s'.format(error.retry_after)
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
 
 client.loop.create_task(list_servers())
 client.run(TOKEN)

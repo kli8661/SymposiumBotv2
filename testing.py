@@ -6,9 +6,7 @@ import asyncio
 import aiohttp
 import json
 import discord
-import requests
 from discord import Game
-from bs4 import BeautifulSoup
 from discord.ext import commands
 from discord.ext.commands import Bot
 from prawcore import NotFound
@@ -73,8 +71,11 @@ async def clear(context, amount):
                 description="Squares a number.",
                 brief="Squares a number. \n[.square <number>]")
 async def square(number):
-    squared_value = int(number) * int(number)
-    await client.say(str(number) + " squared is " + str(squared_value))
+    try:
+        squared_value = float(number) * float(number)
+        await client.say(str(number) + " squared is " + str(squared_value))
+    except ValueError:
+        await client.say('Not a number, use .square <number>.')
 
 
 @client.command(name='bitcoin',
@@ -148,6 +149,15 @@ async def hot_posts(ctx, subreddit, amount):
     await client.send_message(channel, embed=embed)
 
 
+def sub_exists(sub):
+    exists = True
+    try:
+        reddit.subreddits.search_by_name(sub, include_nsfw=True, exact=True)
+    except NotFound:
+        exists = False
+    return exists
+
+
 @client.command(name='rsearch',
                 description='Searches reddit.',
                 brief='Searches reddit. \n[.rsearch <example search>]',
@@ -167,43 +177,6 @@ async def rsearch(ctx, *, query):
         embed.add_field(name=str(i.title), value='URL: ' + str(i.url), inline=False)
 
     await client.send_message(channel, embed=embed)
-
-
-@client.event
-async def on_command_error(error, ctx):
-    if isinstance(error, commands.CommandNotFound):
-        await client.send_message(ctx.message.channel, 'Cannot find this command!')
-    else:
-        raise error
-
-
-@hot_posts.error
-async def value_error(error, ctx):
-    if isinstance(error, commands.CommandInvokeError):
-        msg = 'Use a number from 1-25.'
-        await client.send_message(ctx.message.channel, msg)
-    else:
-        raise error
-
-
-def sub_exists(sub):
-    exists = True
-    try:
-        reddit.subreddits.search_by_name(sub, include_nsfw=True, exact=True)
-    except NotFound:
-        exists = False
-    return exists
-
-
-@square.error
-@hot_posts.error
-@rsearch.error
-async def missing_argument_error(error, ctx):
-    if isinstance(error, commands.MissingRequiredArgument):
-        msg = 'Put something in please.'
-        await client.send_message(ctx.message.channel, msg)
-    else:
-        raise error
 
 
 @client.command(name='r_meme',
@@ -246,6 +219,34 @@ async def timeout_error(error, ctx):
 async def meme_antispam(error, ctx):
     if isinstance(error, commands.CommandOnCooldown):
         msg = 'You can use this every 3 seconds, please try again in {:.2f}s'.format(error.retry_after)
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
+
+@square.error
+@hot_posts.error
+@rsearch.error
+async def missing_argument_error(error, ctx):
+    if isinstance(error, commands.MissingRequiredArgument):
+        msg = 'Put something in please.'
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
+
+@client.event
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.CommandNotFound):
+        await client.send_message(ctx.message.channel, 'Cannot find this command!')
+    else:
+        raise error
+
+
+@hot_posts.error
+async def value_error(error, ctx):
+    if isinstance(error, commands.CommandInvokeError):
+        msg = 'Use a number from 1-25.'
         await client.send_message(ctx.message.channel, msg)
     else:
         raise error

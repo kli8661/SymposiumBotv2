@@ -1,10 +1,7 @@
 # Kent Reddit Bot
 
 import praw
-import random
 import discord
-import requests
-from bs4 import BeautifulSoup
 from prawcore import NotFound
 from discord.ext import commands
 from discord.ext.commands import Bot

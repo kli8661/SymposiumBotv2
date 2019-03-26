@@ -1,5 +1,4 @@
 aiohttp
-bs4
 cogs
 discord
 discord.py

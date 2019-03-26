@@ -1,6 +1,7 @@
 # Shuyi Music Bot
 
 from discord.ext import commands
+import youtube_dl
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 
@@ -33,5 +34,14 @@ async def leave(ctx):
     server = ctx.message.server
     vc = client.voice_client_in(server)
     await vc.disconnect()
+
+
+@client.command(pass_context=True)
+async def play(ctx, url, players=None):
+        server = ctx.message.server
+        voice_client = client.voice_client_in(server)
+        player = await  voice_client.create_ytdl_player(url)
+        players[server.id] = player
+        player.start()
 
 client.run(TOKEN)

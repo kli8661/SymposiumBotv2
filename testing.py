@@ -306,7 +306,6 @@ async def value_error(error, ctx):
         raise error
 
 
-@play.error
 @leave.error
 async def channel_error(error, ctx):
     if isinstance(error, commands.CommandInvokeError):

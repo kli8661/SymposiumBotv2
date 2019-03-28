@@ -11,8 +11,8 @@ players = {}
 
 @client.command(name='join',
                 description="Joins current voice channel.",
-                brief="Joins voice channel."
-                , pass_context=True)
+                brief="Joins voice channel.",
+                pass_context=True)
 async def join(ctx):
     channel = ctx.message.author.voice.voice_channel
     server = ctx.message.server

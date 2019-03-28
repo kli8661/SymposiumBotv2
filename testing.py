@@ -273,7 +273,6 @@ async def meme_antispam(error, ctx):
         raise error
 
 
-@play.error
 @square.error
 @hot_posts.error
 @rsearch.error

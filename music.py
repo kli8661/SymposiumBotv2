@@ -55,8 +55,8 @@ async def play(ctx, url):
                 brief='Pause',
                 pass_context=True)
 async def pause(ctx):
-    id = ctx.message.server.id
-    players[id].pause()
+    pid = ctx.message.server.id
+    players[pid].pause()
 
 
 @client.command(name='resume',
@@ -64,8 +64,8 @@ async def pause(ctx):
                 brief='Resumes',
                 pass_context=True)
 async def resumes(ctx):
-        id = ctx.message.server.id
-        players[id].resume()
+        rid = ctx.message.server.id
+        players[rid].resume()
 
 
 @client.command(name='stop',

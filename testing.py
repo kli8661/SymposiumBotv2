@@ -107,7 +107,6 @@ async def list_servers():
                 brief="Joins voice channel."
                 , pass_context=True)
 async def join(ctx):
-    notInChannel = False
     channel = ctx.message.author.voice.voice_channel
     server = ctx.message.server
     vc = client.voice_client_in(server)
@@ -124,7 +123,6 @@ async def join(ctx):
                 brief="Leaves voice channel."
                 , pass_context=True)
 async def leave(ctx):
-    notInChannel = True
     server = ctx.message.server
     vc = client.voice_client_in(server)
     await vc.disconnect()
@@ -137,14 +135,11 @@ async def leave(ctx):
                 pass_context=True)
 async def play(ctx, url):
     server = ctx.message.server
-    if notInChannel:
-        await client.send_message(server, 'Not in a channel!')
-    else:
-        voice_client = client.voice_client_in(server)
-        player = await voice_client.create_ytdl_player(url)
-        players[server.id] = player
-        player.start()
-        await client.send_message(server, 'Playing Music')
+    voice_client = client.voice_client_in(server)
+    player = await voice_client.create_ytdl_player(url)
+    players[server.id] = player
+    player.start()
+    await client.send_message(server, 'Playing Music')
 
 
 @client.command(name='pause',

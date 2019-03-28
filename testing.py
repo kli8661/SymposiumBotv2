@@ -16,6 +16,7 @@ TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
 players = {}
 client = Bot(command_prefix=BOT_PREFIX)
+notInChannel = True
 
 reddit = praw.Reddit(client_id='35201Cc7I7xVlA',
                      client_secret='ARuwXMrYhEZTjxq9UZlkIHOiL10',
@@ -106,6 +107,7 @@ async def list_servers():
                 brief="Joins voice channel."
                 , pass_context=True)
 async def join(ctx):
+    notInChannel = False
     channel = ctx.message.author.voice.voice_channel
     server = ctx.message.server
     vc = client.voice_client_in(server)
@@ -122,6 +124,7 @@ async def join(ctx):
                 brief="Leaves voice channel."
                 , pass_context=True)
 async def leave(ctx):
+    notInChannel = True
     server = ctx.message.server
     vc = client.voice_client_in(server)
     await vc.disconnect()
@@ -134,10 +137,14 @@ async def leave(ctx):
                 pass_context=True)
 async def play(ctx, url):
     server = ctx.message.server
-    voice_client = client.voice_client_in(server)
-    player = await voice_client.create_ytdl_player(url)
-    players[server.id] = player
-    player.start()
+    if notInChannel:
+        await client.send_message(server, 'Not in a channel!')
+    else:
+        voice_client = client.voice_client_in(server)
+        player = await voice_client.create_ytdl_player(url)
+        players[server.id] = player
+        player.start()
+        await client.send_message(server, 'Playing Music')
 
 
 @client.command(name='pause',
@@ -147,6 +154,7 @@ async def play(ctx, url):
 async def pause(ctx):
     pid = ctx.message.server.id
     players[pid].pause()
+    await client.say('Paused')
 
 
 @client.command(name='resume',
@@ -156,6 +164,7 @@ async def pause(ctx):
 async def resume(ctx):
     rid = ctx.message.server.id
     players[rid].resume()
+    await client.say('Resumed')
 
 
 @client.command(name='stop',
@@ -165,6 +174,7 @@ async def resume(ctx):
 async def stop(ctx):
     rid = ctx.message.server.id
     players[rid].stop()
+    await client.say('Music Stopped')
 
 
 @client.command(name='hot_posts',
@@ -301,6 +311,7 @@ async def value_error(error, ctx):
         raise error
 
 
+@play.error
 @leave.error
 async def channel_error(error, ctx):
     if isinstance(error, commands.CommandInvokeError):

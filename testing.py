@@ -14,6 +14,7 @@ from prawcore import NotFound
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
+players = {}
 client = Bot(command_prefix=BOT_PREFIX)
 
 reddit = praw.Reddit(client_id='35201Cc7I7xVlA',
@@ -126,6 +127,46 @@ async def leave(ctx):
     await vc.disconnect()
 
 
+@client.command(name='play',
+                description='Plays music.',
+                brief='Plays Music.\n'
+                      '[.play <URL>]',
+                pass_context=True)
+async def play(ctx, url):
+    server = ctx.message.server
+    voice_client = client.voice_client_in(server)
+    player = await voice_client.create_ytdl_player(url)
+    players[server.id] = player
+    player.start()
+
+
+@client.command(name='pause',
+                description='Pauses music.',
+                brief='Pause Music',
+                pass_context=True)
+async def pause(ctx):
+    pid = ctx.message.server.id
+    players[pid].pause()
+
+
+@client.command(name='resume',
+                description='Resumes music.',
+                brief='Resumes Music',
+                pass_context=True)
+async def resume(ctx):
+    rid = ctx.message.server.id
+    players[rid].resume()
+
+
+@client.command(name='stop',
+                description='Stops music.',
+                brief='Stops Music',
+                pass_context=True)
+async def stop(ctx):
+    rid = ctx.message.server.id
+    players[rid].stop()
+
+
 @client.command(name='hot_posts',
                 description='Grabs the hot posts from a subreddit of the users choice.',
                 brief='Grabs hot posts from subreddit. \n[.hot_posts <subreddit> <number of posts>]',
@@ -211,18 +252,6 @@ async def r_meme(ctx):
     else:
         await r_meme()
         await client.send_message('Unable to find meme, please try again.')
-
-
-@client.command(name='play',
-                description='Plays music.',
-                brief='Plays music. .play <URL>.',
-                pass_context=True)
-async def play(ctx, url, players=None):
-    server = ctx.message.server
-    voice_client = client.voice_client_in(server)
-    player = await voice_client.create_ytdl_player(url)
-    players[server.id] = player
-    player.start()
 
 
 @rsearch.error

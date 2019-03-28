@@ -4,11 +4,8 @@ from discord.ext import commands
 import youtube_dl
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
-
 BOT_PREFIX = '.'
-
 client = commands.Bot(command_prefix=BOT_PREFIX)
-
 players = {}
 
 
@@ -63,9 +60,9 @@ async def pause(ctx):
                 description='Resumes music.',
                 brief='Resumes',
                 pass_context=True)
-async def resumes(ctx):
-        rid = ctx.message.server.id
-        players[rid].resume()
+async def resume(ctx):
+    rid = ctx.message.server.id
+    players[rid].resume()
 
 
 @client.command(name='stop',
@@ -73,8 +70,8 @@ async def resumes(ctx):
                 brief='Stops',
                 pass_context=True)
 async def stop(ctx):
-            id = ctx.message.server.id
-            players[id].stop()
+    rid = ctx.message.server.id
+    players[rid].stop()
 
 
 @leave.error

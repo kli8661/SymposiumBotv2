@@ -213,18 +213,6 @@ async def r_meme(ctx):
         await client.send_message('Unable to find meme, please try again.')
 
 
-@client.command(name='play',
-                description='Plays music.',
-                brief='Plays music. .play <URL>.',
-                pass_context=True)
-async def play(ctx, url, players=None):
-    server = ctx.message.server
-    voice_client = client.voice_client_in(server)
-    player = await voice_client.create_ytdl_player(url)
-    players[server.id] = player
-    player.start()
-
-
 @rsearch.error
 @hot_posts.error
 async def timeout_error(error, ctx):
@@ -244,7 +232,6 @@ async def meme_antispam(error, ctx):
         raise error
 
 
-@play.error
 @square.error
 @hot_posts.error
 @rsearch.error

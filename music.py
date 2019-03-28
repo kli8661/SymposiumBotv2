@@ -9,6 +9,8 @@ BOT_PREFIX = '.'
 
 client = commands.Bot(command_prefix=BOT_PREFIX)
 
+players = {}
+
 
 @client.command(name='join',
                 description="Joins current voice channel.",
@@ -40,12 +42,39 @@ async def leave(ctx):
                 description='Plays music.',
                 brief='Plays music. .play <URL>.',
                 pass_context=True)
-async def play(ctx, url, players=None):
+async def play(ctx, url):
     server = ctx.message.server
     voice_client = client.voice_client_in(server)
     player = await voice_client.create_ytdl_player(url)
     players[server.id] = player
     player.start()
+
+
+@client.command(name='pause',
+                description='Pauses music.',
+                brief='Pause',
+                pass_context=True)
+async def pause(ctx):
+    id = ctx.message.server.id
+    players[id].pause()
+
+
+@client.command(name='resume',
+                description='Resumes music.',
+                brief='Resumes',
+                pass_context=True)
+async def resumes(ctx):
+        id = ctx.message.server.id
+        players[id].resume()
+
+
+@client.command(name='stop',
+                description='Stops music.',
+                brief='Stops',
+                pass_context=True)
+async def stop(ctx):
+            id = ctx.message.server.id
+            players[id].stop()
 
 
 @leave.error

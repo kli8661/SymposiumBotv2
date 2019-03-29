@@ -57,6 +57,10 @@ class Google:
                 e.add_field(name='Out', value=words[1].text, inline=True)
                 return e
 
+            weather = parent.find(".//ol//div[@class='e']")
+            if weather is None:
+                return None
+
     @client.command(name='Google Search',
                     description='Searches Google',
                     pass_context=True)

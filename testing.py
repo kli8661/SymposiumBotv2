@@ -321,5 +321,21 @@ async def channel_error(error, ctx):
         raise error
 
 
+@join.error
+async def isvoice_error(error, ctx):
+    if isinstance(error, commands.CommandInvokeError):
+        await client.send_message(ctx.message.channel, 'Must be in a voice channel to use .join!')
+    else:
+        raise error
+
+
+@play.error
+async def url_error(error, ctx):
+    if isinstance(error, commands.CommandInvokeError):
+        await client.send_message(ctx.message.channel, 'Youtube links only.')
+    else:
+        raise error
+
+
 client.loop.create_task(list_servers())
 client.run(TOKEN)

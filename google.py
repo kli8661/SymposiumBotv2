@@ -62,7 +62,6 @@ class Google:
 
         @commands.command(pass_context=True)
         async def g(self, ctx, *, query):
-            """Google web search. Ex: >g what is discordapp?"""
             if not embed_perms(ctx.message):
                 config = load_optional_config()
                 async with aiohttp.ClientSession() as session:

@@ -1,8 +1,10 @@
+import discord
 import json
-import urllib.parse
-import aiohttp
+from discord.ext import commands
 from cogs.utils.checks import load_optional_config, embed_perms, get_google_entries
-from discord.ext.commands import Bot
+from cogs.utils.config import get_config_value
+import aiohttp
+import urllib.parse
 
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
@@ -28,6 +30,32 @@ m_cx_key = '008921493878794350931:tioeliy7j1y'
 #    print(title)
 #    print(link)
 #    print(dis)
+
+class Google:
+
+    def __init__(self, bot):
+        self.bot = bot
+
+        def parse_google_card(self, node):
+            if node is None or type(node) is int:
+                return None
+
+            e = discord.Embed(colour=0x0057e7)
+
+            calculator = node.find(".//table/tr/td/span[@class='nobr']/h2[@class='r']")
+            if calculator is not None:
+                e.title = 'Calculator'
+                e.description = ''.join(calculator.itertext())
+                return e
+
+            parent = node.getparent()
+
+            words = parent.find(".//ol/div[@class='g']/div/table/tr/td/h3[@class='r']")
+            if words is not None:
+                e.title = 'Google Translate'
+                e.add_field(name='Input', value=words[0].text, inline=True)
+                e.add_field(name='Out', value=words[1].text, inline=True)
+                return e
 
     @client.command(name='Google Search',
                     description='Searches Google',

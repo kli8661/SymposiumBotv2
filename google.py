@@ -2,10 +2,9 @@ import discord
 import json
 from discord.ext import commands
 from cogs.utils.checks import load_optional_config, embed_perms, get_google_entries
-# from cogs.utils.config import get_config_value
 import aiohttp
 import urllib.parse
-
+from discord.ext.commands import Bot
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
@@ -61,26 +60,44 @@ class Google:
             if weather is None:
                 return None
 
-    @client.command(name='Google Search',
-                    description='Searches Google',
-                    pass_context=True)
+        @commands.command(pass_context=True)
+        async def g(self, ctx, *, query):
+            """Google web search. Ex: >g what is discordapp?"""
+            if not embed_perms(ctx.message):
+                config = load_optional_config()
+                async with aiohttp.ClientSession() as session:
+                    async with session.get("https://www.googleapis.com/customsearch/v1?q=" + urllib.parse.quote_plus(
+                            query) + "&start=" + '1' + "&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4" + "&cx=008921493878794350931:tioeliy7j1y" + config[
+                                               'custom_search_engine']) as resp:
+                        result = json.loads(await resp.text())
+                return await ctx.send(result['items'][['link']]['snippet'])
 
-    async def gsearch(ctx, *, query):
-        if not embed_perms(ctx.message):
-            config = load_optional_config()
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://www.googleapis.com/customsearch/v1?q=" + urllib.parse.quote_plus(query) + "&start=" + '1' + "&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4" + "&cx=008921493878794350931:tioeliy7j1y") as resp:
-                result = json.loads(await resp.txt())
-            return await ctx.send(result['items'][['link']]['snippet'])
-    try:
-        entries, root = await get_google_entries(query)
-        card_node = root.find(".//div[@id='topstuff']")
-        card = self.parse_google_card(card_node)
+            try:
+                entries, root = await get_google_entries(query)
+                card_node = root.find(".//div[@id='topstuff']")
+                card = self.parse_google_card(card_node)
+            except RuntimeError as e:
+                await ctx.send(str(e))
+            else:
+                if card:
+                    value = '\n'.join(entries[:2])
+                    if value:
+                        card.add_field(name='Search Results', value=value, inline=False)
+                    return await ctx.send(embed=card)
+                if len(entries) == 0:
+                    return await ctx.send('No results.')
+                next_two = entries[1:3]
+                if next_two:
+                    formatted = '\n'.join(map(lambda x: '<%s>' % x, next_two))
+                    msg = '{}\n\n**See also:**\n{}'.format(entries[0], formatted)
+                else:
+                    msg = entries[0]
+                await ctx.send(msg)
 
-        # return return the snippet section of the links + websites
 
 client = Bot(command_prefix=BOT_PREFIX)
 client.run(TOKEN)
+
 
 
 

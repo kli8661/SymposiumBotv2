@@ -304,10 +304,12 @@ async def on_command_error(error, ctx):
         raise error
 
 
+@clear.error
 @hot_posts.error
 async def value_error(error, ctx):
     if isinstance(error, commands.CommandInvokeError):
-        msg = 'Use a number from 1-25.'
+        msg = 'hot_posts: Use a number from 1-25.\n' \
+              'clear: Use a number 1-99 / Not allowed to clear chat.'
         await client.send_message(ctx.message.channel, msg)
     else:
         raise error

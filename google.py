@@ -1,10 +1,11 @@
 import discord
 import json
 from discord.ext import commands
-
-import aiohttp
+from cogs.utils.checks import load_optional_config, embed_perms
 import urllib.parse
+
 from discord.ext.commands import Bot
+from pip._vendor.html5lib.treebuilders import etree
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
@@ -14,14 +15,14 @@ m_cx_key = '008921493878794350931:tioeliy7j1y'
 
 
 # def google_search(search_term, api_key, cx_id, **kwargs):
-   # service = build("customSearch", "v1", developerKey=api_key)
-   # res = service.cse().list(q=search_term, cx=cx_id, **kwargs).execute()
- #  return res['items']
+# service = build("customSearch", "v1", developerKey=api_key)
+# res = service.cse().list(q=search_term, cx=cx_id, **kwargs).execute()
+#  return res['items']
 
- # results = google_search('facebook', api_key, cx_key, num=2)
+# results = google_search('facebook', api_key, cx_key, num=2)
 
 # for result in results:
-   # pprint.pprint(result)
+# pprint.pprint(result)
 
 #    title = result['title']
 #    link = result['formattedUrl']
@@ -31,7 +32,7 @@ m_cx_key = '008921493878794350931:tioeliy7j1y'
 #    print(dis)
 
 class Google:
-
+    # https://stackoverflow.com/questions/23248017/cannot-find-reference-xxx-in-init-py-python-pycharm
     def __init__(self, bot):
         self.bot = bot
 
@@ -48,7 +49,8 @@ class Google:
                 return e
 
             parent = node.getparent()
-
+            # https://devhints.io/xpath\
+            # https://stackoverflow.com/questions/3030487/is-there-a-way-to-get-the-xpath-in-google-chrome
             words = parent.find(".//ol/div[@class='g']/div/table/tr/td/h3[@class='r']")
             if words is not None:
                 e.title = 'Google Translate'
@@ -66,7 +68,8 @@ class Google:
                 config = load_optional_config()
                 async with aiohttp.ClientSession() as session:
                     async with session.get("https://www.googleapis.com/customsearch/v1?q=" + urllib.parse.quote_plus(
-                            query) + "&start=" + '1' + "&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4" + "&cx=008921493878794350931:tioeliy7j1y" + config[
+                            query) + "&start=" + '1' + "&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4" + "&cx=008921493878794350931:tioeliy7j1y" +
+                                           config[
                                                'custom_search_engine']) as resp:
                         result = json.loads(await resp.text())
                 return await ctx.send(result['items'][['link']]['snippet'])
@@ -94,9 +97,50 @@ class Google:
                 await ctx.send(msg)
 
 
+async def get_google_entries(query):
+    params = {
+        'q': query,
+        'safe': 'off'
+    }
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64)'
+    }
+    entries = []
+    async with aiohttp.ClientSession() as session:
+        async with session.get('https://www.google.com/search', params=params, headers=headers) as resp:
+            if resp.status != 200:
+                config = load_optional_config()
+                async with session.get("https://www.googleapis.com/customsearch/v1?q=" + quote_plus(
+                        query) + "&start=" + '1' + "&key=" + config['google_api_key'] + "&cx=" + config[
+                                           'custom_search_engine']) as resp:
+                    result = json.loads(await resp.text())
+                return None, result['items'][0]['link']
+
+            try:
+                root = etree.fromstring(await resp.text(), etree.HTMLParser())
+                search_nodes = root.findall(".//div[@class='g']")
+                for node in search_nodes:
+                    url_node = node.find('.//h3/a')
+                    if url_node is None:
+                        continue
+                    url = url_node.attrib['href']
+                    if not url.startswith('/url?'):
+                        continue
+                    url = parse_qs(url[5:])['q'][0]
+                    entries.append(url)
+            except NameError:
+                root = BeautifulSoup(await resp.text(), 'html.parser')
+                for result in root.find_all("div", class_='g'):
+                    url_node = result.find('h3')
+                    if url_node:
+                        for link in url_node.find_all('a', href=True):
+                            url = link['href']
+                            if not url.startswith('/url?'):
+                                continue
+                            url = parse_qs(url[5:])['q'][0]
+                            entries.append(url)
+    return entries, root
+
+
 client = Bot(command_prefix=BOT_PREFIX)
 client.run(TOKEN)
-
-
-
-

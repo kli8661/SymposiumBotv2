@@ -46,7 +46,7 @@ async def hot_posts(ctx, subreddit, amount):
 
 
 @client.command(name='rsearch',
-                description='Searches reddit. Replace space with _.',
+                description='Searches reddit.',
                 brief='Searches reddit. \n[.rsearch <example search>]',
                 pass_context=True)
 @commands.cooldown(1.0, 10.0, commands.BucketType.user)
@@ -64,16 +64,6 @@ async def rsearch(ctx, *, query):
         embed.add_field(name=str(i.title), value='URL: ' + str(i.url), inline=False)
 
     await client.send_message(channel, embed=embed)
-
-
-@rsearch.error
-@hot_posts.error
-async def timeout_error(error, ctx):
-    if isinstance(error, commands.CommandOnCooldown):
-        msg = 'You can use this every 5 seconds, please try again in {:.2f}s'.format(error.retry_after)
-        await client.send_message(ctx.message.channel, msg)
-    else:
-        raise error
 
 
 @hot_posts.error
@@ -103,5 +93,49 @@ def sub_exists(sub):
         exists = False
     return exists
 
+
+@client.command(name='r_meme',
+                description='Grabs memes.',
+                brief='Grabs memes from meme subreddits.',
+                pass_context=True)
+@commands.cooldown(1.0, 3.0, commands.BucketType.user)
+async def r_meme(ctx):
+    channel = ctx.message.channel
+    import random
+    subredditlist = ['dankmemes', 'memes', 'deepfriedmemes', 'nukedmemes',
+                     'surrealmemes', 'wholesomememes', 'comedycemetery', 'me_irl', 'bonehurtingjuice']
+    sub = random.choice(subredditlist)
+    print(sub)
+    post_sub = reddit.subreddit(sub)
+    posts = [post for post in post_sub.new(limit=100)]
+    random_post_number = random.randint(0, 100)
+    random_post = posts[random_post_number]
+    url = random_post.url
+    print(url)
+    if url.endswith('.jpg') | url.endswith('.jpeg') | url.endswith('.png') | url.endswith('gif'):
+        if not random_post.stickied:
+            await client.send_message(channel, sub + '\n' + url)
+    else:
+        await r_meme()
+        await client.send_message('Unable to find meme, please try again.')
+
+
+@rsearch.error
+@hot_posts.error
+async def timeout_error(error, ctx):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'You can use this every 5 seconds, please try again in {:.2f}s'.format(error.retry_after)
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
+
+@r_meme.error
+async def meme_antispam(error, ctx):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'You can use this every 3 seconds, please try again in {:.2f}s'.format(error.retry_after)
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
 
 client.run(TOKEN)

@@ -6,6 +6,7 @@ import asyncio
 import aiohttp
 import json
 import discord
+import youtube_dl
 from discord import Game
 from discord.ext import commands
 from discord.ext.commands import Bot
@@ -13,7 +14,9 @@ from prawcore import NotFound
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
+players = {}
 client = Bot(command_prefix=BOT_PREFIX)
+notInChannel = True
 
 reddit = praw.Reddit(client_id='35201Cc7I7xVlA',
                      client_secret='ARuwXMrYhEZTjxq9UZlkIHOiL10',
@@ -71,8 +74,11 @@ async def clear(context, amount):
                 description="Squares a number.",
                 brief="Squares a number. \n[.square <number>]")
 async def square(number):
-    squared_value = int(number) * int(number)
-    await client.say(str(number) + " squared is " + str(squared_value))
+    try:
+        squared_value = float(number) * float(number)
+        await client.say(str(number) + " squared is " + str(squared_value))
+    except ValueError:
+        await client.say('Not a number, use .square <number>.')
 
 
 @client.command(name='bitcoin',
@@ -102,7 +108,14 @@ async def list_servers():
                 , pass_context=True)
 async def join(ctx):
     channel = ctx.message.author.voice.voice_channel
-    await client.join_voice_channel(channel)
+    server = ctx.message.server
+    vc = client.voice_client_in(server)
+    if client.is_voice_connected(server):
+        await vc.move_to(channel)
+        await client.say("I joined the voice channel: {}".format(channel))
+    else:
+        await client.join_voice_channel(channel)
+        await client.say("I joined the voice channel: {}".format(channel))
 
 
 @client.command(name='leave',
@@ -113,6 +126,50 @@ async def leave(ctx):
     server = ctx.message.server
     vc = client.voice_client_in(server)
     await vc.disconnect()
+
+
+@client.command(name='play',
+                description='Plays music.',
+                brief='Plays Music.\n'
+                      '[.play <URL>]',
+                pass_context=True)
+async def play(ctx, url):
+    server = ctx.message.server
+    voice_client = client.voice_client_in(server)
+    player = await voice_client.create_ytdl_player(url)
+    players[server.id] = player
+    player.start()
+    await client.send_message(server, 'Playing Music')
+
+
+@client.command(name='pause',
+                description='Pauses music.',
+                brief='Pause Music',
+                pass_context=True)
+async def pause(ctx):
+    pid = ctx.message.server.id
+    players[pid].pause()
+    await client.say('Paused')
+
+
+@client.command(name='resume',
+                description='Resumes music.',
+                brief='Resumes Music',
+                pass_context=True)
+async def resume(ctx):
+    rid = ctx.message.server.id
+    players[rid].resume()
+    await client.say('Resumed')
+
+
+@client.command(name='stop',
+                description='Stops music.',
+                brief='Stops Music',
+                pass_context=True)
+async def stop(ctx):
+    rid = ctx.message.server.id
+    players[rid].stop()
+    await client.say('Music Stopped')
 
 
 @client.command(name='hot_posts',
@@ -146,8 +203,17 @@ async def hot_posts(ctx, subreddit, amount):
     await client.send_message(channel, embed=embed)
 
 
+def sub_exists(sub):
+    exists = True
+    try:
+        reddit.subreddits.search_by_name(sub, include_nsfw=True, exact=True)
+    except NotFound:
+        exists = False
+    return exists
+
+
 @client.command(name='rsearch',
-                description='Searches reddit. Replace space with _.',
+                description='Searches reddit.',
                 brief='Searches reddit. \n[.rsearch <example search>]',
                 pass_context=True)
 @commands.cooldown(1.0, 10.0, commands.BucketType.user)
@@ -167,11 +233,57 @@ async def rsearch(ctx, *, query):
     await client.send_message(channel, embed=embed)
 
 
+@client.command(name='r_meme',
+                description='Grabs memes.',
+                brief='Grabs memes from meme subreddits.',
+                pass_context=True)
+@commands.cooldown(1.0, 3.0, commands.BucketType.user)
+async def r_meme(ctx):
+    channel = ctx.message.channel
+    import random
+    subredditlist = ['dankmemes', 'memes', 'deepfriedmemes', 'nukedmemes',
+                     'surrealmemes', 'wholesomememes', 'comedycemetery', 'me_irl', 'bonehurtingjuice']
+    sub = random.choice(subredditlist)
+    print(sub)
+    post_sub = reddit.subreddit(sub)
+    posts = [post for post in post_sub.new(limit=100)]
+    random_post_number = random.randint(0, 100)
+    random_post = posts[random_post_number]
+    url = random_post.url
+    print(url)
+    if url.endswith('.jpg') | url.endswith('.jpeg') | url.endswith('.png') | url.endswith('gif'):
+        if not random_post.stickied:
+            await client.send_message(channel, sub + '\n' + url)
+    else:
+        await r_meme()
+        await client.send_message('Unable to find meme, please try again.')
+
+
 @rsearch.error
 @hot_posts.error
 async def timeout_error(error, ctx):
     if isinstance(error, commands.CommandOnCooldown):
         msg = 'You can use this every 10 seconds, please try again in {:.2f}s'.format(error.retry_after)
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
+
+@r_meme.error
+async def meme_antispam(error, ctx):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'You can use this every 3 seconds, please try again in {:.2f}s'.format(error.retry_after)
+        await client.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+
+
+@square.error
+@hot_posts.error
+@rsearch.error
+async def missing_argument_error(error, ctx):
+    if isinstance(error, commands.MissingRequiredArgument):
+        msg = 'Missing required argument, use .help for more info.'
         await client.send_message(ctx.message.channel, msg)
     else:
         raise error
@@ -194,22 +306,10 @@ async def value_error(error, ctx):
         raise error
 
 
-def sub_exists(sub):
-    exists = True
-    try:
-        reddit.subreddits.search_by_name(sub, include_nsfw=True, exact=True)
-    except NotFound:
-        exists = False
-    return exists
-
-
-@square.error
-@hot_posts.error
-@rsearch.error
-async def missing_argument_error(error, ctx):
-    if isinstance(error, commands.MissingRequiredArgument):
-        msg = 'Put something in please.'
-        await client.send_message(ctx.message.channel, msg)
+@leave.error
+async def channel_error(error, ctx):
+    if isinstance(error, commands.CommandInvokeError):
+        await client.send_message(ctx.message.channel, 'Not in channel!')
     else:
         raise error
 

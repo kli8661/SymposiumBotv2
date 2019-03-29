@@ -134,12 +134,15 @@ async def leave(ctx):
                       '[.play <URL>]',
                 pass_context=True)
 async def play(ctx, url):
-    server = ctx.message.server
-    voice_client = client.voice_client_in(server)
-    player = await voice_client.create_ytdl_player(url)
-    players[server.id] = player
-    player.start()
-    await client.send_message(server, 'Playing Music')
+    try:
+        server = ctx.message.server
+        voice_client = client.voice_client_in(server)
+        player = await voice_client.create_ytdl_player(url)
+        players[server.id] = player
+        player.start()
+        await client.say('Playing')
+    except AttributeError:
+        await client.say('Not in channel.')
 
 
 @client.command(name='pause',
@@ -284,6 +287,7 @@ async def meme_antispam(error, ctx):
         raise error
 
 
+@play.error
 @square.error
 @hot_posts.error
 @rsearch.error

@@ -147,9 +147,12 @@ async def play(ctx, url):
                 brief='Pause Music',
                 pass_context=True)
 async def pause(ctx):
-    pid = ctx.message.server.id
-    players[pid].pause()
-    await client.say('Paused')
+    try:
+        pid = ctx.message.server.id
+        players[pid].pause()
+        await client.say('Paused')
+    except KeyError:
+        await client.say('Not in channel / Not playing music.')
 
 
 @client.command(name='resume',
@@ -157,9 +160,12 @@ async def pause(ctx):
                 brief='Resumes Music',
                 pass_context=True)
 async def resume(ctx):
-    rid = ctx.message.server.id
-    players[rid].resume()
-    await client.say('Resumed')
+    try:
+        rid = ctx.message.server.id
+        players[rid].resume()
+        await client.say('Resumed')
+    except KeyError:
+        await client.say('Not in channel / Not playing music.')
 
 
 @client.command(name='stop',

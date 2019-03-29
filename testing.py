@@ -6,7 +6,6 @@ import asyncio
 import aiohttp
 import json
 import discord
-import youtube_dl
 from discord import Game
 from discord.ext import commands
 from discord.ext.commands import Bot
@@ -16,8 +15,6 @@ TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
 players = {}
 client = Bot(command_prefix=BOT_PREFIX)
-notInChannel = True
-
 reddit = praw.Reddit(client_id='35201Cc7I7xVlA',
                      client_secret='ARuwXMrYhEZTjxq9UZlkIHOiL10',
                      user_agent='praw_bot')
@@ -104,8 +101,8 @@ async def list_servers():
 
 @client.command(name='join',
                 description="Joins current voice channel.",
-                brief="Joins voice channel."
-                , pass_context=True)
+                brief='Joins voice channel.',
+                pass_context=True)
 async def join(ctx):
     channel = ctx.message.author.voice.voice_channel
     server = ctx.message.server
@@ -120,8 +117,8 @@ async def join(ctx):
 
 @client.command(name='leave',
                 description="Leaves voice channel.",
-                brief="Leaves voice channel."
-                , pass_context=True)
+                brief="Leaves voice channel.",
+                pass_context=True)
 async def leave(ctx):
     server = ctx.message.server
     vc = client.voice_client_in(server)

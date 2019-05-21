@@ -316,7 +316,7 @@ async def value_error_clear(error, ctx):
 @hot_posts.error
 async def value_error(error, ctx):
     if isinstance(error, commands.CommandInvokeError):
-        msg = 'hot_posts: Use a number from 1-25.\n'
+        msg = 'hot_posts: Use a number from 1-25.'
         await client.send_message(ctx.message.channel, msg)
     else:
         raise error

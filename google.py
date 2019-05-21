@@ -1,5 +1,6 @@
 import discord
 import json
+import aiohttp
 from discord.ext import commands
 from cogs.utils.checks import load_optional_config, embed_perms
 import urllib.parse

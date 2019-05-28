@@ -1,12 +1,13 @@
-import discord
 import json
 import aiohttp
 from discord.ext import commands
-from cogs.utils.checks import load_optional_config, embed_perms
+from utils.checks import load_optional_config, embed_perms
 import urllib.parse
+from bs4 import BeautifulSoup
 
 from discord.ext.commands import Bot
 from pip._vendor.html5lib.treebuilders import etree
+#https://github.com/pypa/pip/tree/master/src/pip/_vendor/html5lib/treebuilders
 
 TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
@@ -33,6 +34,10 @@ m_cx_key = '008921493878794350931:tioeliy7j1y'
 #    print(dis)
 
 class Google:
+    def parse_google__card(self, node):
+        if node is None or type(node) is int:
+            return None
+
     # https://stackoverflow.com/questions/23248017/cannot-find-reference-xxx-in-init-py-python-pycharm
         @commands.command(pass_context=True)
         async def g(self, ctx, *, query):

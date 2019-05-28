@@ -34,44 +34,16 @@ m_cx_key = '008921493878794350931:tioeliy7j1y'
 
 class Google:
     # https://stackoverflow.com/questions/23248017/cannot-find-reference-xxx-in-init-py-python-pycharm
-    def __init__(self, bot):
-        self.bot = bot
-
-        def parse_google_card(self, node):
-            if node is None or type(node) is int:
-                return None
-
-            e = discord.Embed(colour=0x0057e7)
-
-            calculator = node.find(".//table/tr/td/span[@class='nobr']/h2[@class='r']")
-            if calculator is not None:
-                e.title = 'Calculator'
-                e.description = ''.join(calculator.itertext())
-                return e
-
-            parent = node.getparent()
-            # https://devhints.io/xpath\
-            # https://stackoverflow.com/questions/3030487/is-there-a-way-to-get-the-xpath-in-google-chrome
-            words = parent.find(".//ol/div[@class='g']/div/table/tr/td/h3[@class='r']")
-            if words is not None:
-                e.title = 'Google Translate'
-                e.add_field(name='Input', value=words[0].text, inline=True)
-                e.add_field(name='Out', value=words[1].text, inline=True)
-                return e
-
-            weather = parent.find(".//ol//div[@class='e']")
-            if weather is None:
-                return None
-
         @commands.command(pass_context=True)
         async def g(self, ctx, *, query):
             if not embed_perms(ctx.message):
                 config = load_optional_config()
                 async with aiohttp.ClientSession() as session:
-                    async with session.get("https://www.googleapis.com/customsearch/v1?q=" + urllib.parse.quote_plus(
-                            query) + "&start=" + '1' + "&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4" + "&cx=008921493878794350931:tioeliy7j1y" +
-                                           config[
-                                               'custom_search_engine']) as resp:
+                    async with session.get("https://www.googleapis.com/customsearch/v1?q=" +
+                                           urllib.parse.quote_plus(query) + "&start=" +
+                                           '1' + "&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4" +
+                                           "&cx= " + m_cx_key + config
+                                           ['custom_search_engine']) as resp:
                         result = json.loads(await resp.text())
                 return await ctx.send(result['items'][['link']]['snippet'])
 

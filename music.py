@@ -1,9 +1,8 @@
 # Shuyi Music Bot
 
+import config
 from discord.ext import commands
 import youtube_dl
-
-TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
 client = commands.Bot(command_prefix=BOT_PREFIX)
 players = {}
@@ -81,4 +80,3 @@ async def channel_error(error, ctx):
     else:
         raise error
 
-client.run(TOKEN)

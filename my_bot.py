@@ -1,8 +1,9 @@
 # Main runner for the bot.
+import config
 import testing
 from discord.ext.commands import Bot
 
-TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
+TOKEN = config.discord_token
 BOT_PREFIX = '.'
 client = Bot(command_prefix=BOT_PREFIX)
 

@@ -1,17 +1,17 @@
 # Kent Reddit Bot
 
+import config
 import praw
 import discord
 from prawcore import NotFound
 from discord.ext import commands
 from discord.ext.commands import Bot
 
-TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
 BOT_PREFIX = '.'
 client = Bot(command_prefix=BOT_PREFIX)
-reddit = praw.Reddit(client_id='35201Cc7I7xVlA',
-                     client_secret='ARuwXMrYhEZTjxq9UZlkIHOiL10',
-                     user_agent='praw_bot')
+reddit = praw.Reddit(client_id=config.rclientid,
+                     client_secret=config.rclientsecret,
+                     user_agent=config.ruseragent)
 
 
 @client.command(name='hot_posts',
@@ -138,4 +138,3 @@ async def meme_antispam(error, ctx):
     else:
         raise error
 
-client.run(TOKEN)

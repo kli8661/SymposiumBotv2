@@ -1,19 +1,17 @@
+import config
 import json
 import aiohttp
 from discord.ext import commands
 from utils.checks import load_optional_config, embed_perms
 import urllib.parse
 from bs4 import BeautifulSoup
-
+BOT_PREFIX = '.'
 from discord.ext.commands import Bot
 from pip._vendor.html5lib.treebuilders import etree
 #https://github.com/pypa/pip/tree/master/src/pip/_vendor/html5lib/treebuilders
 
-TOKEN = 'NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw'
-BOT_PREFIX = '.'
-
-m_api_key = 'AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4'
-m_cx_key = '008921493878794350931:tioeliy7j1y'
+m_api_key = config.mapikey
+m_cx_key = config.mcxkey
 
 
 # def google_search(search_term, api_key, cx_id, **kwargs):
@@ -118,7 +116,3 @@ async def get_google_entries(query):
                             url = parse_qs(url[5:])['q'][0]
                             entries.append(url)
     return entries, root
-
-
-client = Bot(command_prefix=BOT_PREFIX)
-client.run(TOKEN)

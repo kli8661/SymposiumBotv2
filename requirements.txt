@@ -1,8 +1,10 @@
 aiohttp
+bs4
 cogs
 discord
 discord.py
 discord.py[voice]
+pip
 PyNaCl
 praw
 prawcore

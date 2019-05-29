@@ -1,6 +1,0 @@
-import json
-
-def load_optional_config():
-    with open('settings/optional_config.json', 'r') as f:
-        return json.load(f)
-

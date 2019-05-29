@@ -1,0 +1,6 @@
+discord_token = "NTQ1OTg0ODY4OTM3NjI5NzAw.D2f2UA.AFTB7ougi3e3U0vytq7wUZ8RPIw"
+rclientid = "35201Cc7I7xVlA"
+rclientsecret = "ARuwXMrYhEZTjxq9UZlkIHOiL10"
+ruseragent = "praw_bot"
+mapikey = "AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4"
+mcxkey = "008921493878794350931:tioeliy7j1y"

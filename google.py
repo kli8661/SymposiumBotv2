@@ -4,6 +4,7 @@ import aiohttp
 from discord.ext import commands
 from utils.checks import load_optional_config, embed_perms
 import urllib.parse
+import urlparse
 from bs4 import BeautifulSoup
 BOT_PREFIX = '.'
 from discord.ext.commands import Bot
@@ -79,7 +80,7 @@ async def get_google_entries(query):
         'safe': 'off'
     }
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64)'
+        'User-Agent': 'Mozilla/5.0 (Windows 10; Win64; x64)'
     }
     entries = []
     async with aiohttp.ClientSession() as session:
@@ -102,7 +103,7 @@ async def get_google_entries(query):
                     url = url_node.attrib['href']
                     if not url.startswith('/url?'):
                         continue
-                    url = parse_qs(url[5:])['q'][0]
+                    url = urllib.parse_qs(url[5:])['q'][0]
                     entries.append(url)
             except NameError:
                 root = BeautifulSoup(await resp.text(), 'html.parser')
@@ -113,6 +114,6 @@ async def get_google_entries(query):
                             url = link['href']
                             if not url.startswith('/url?'):
                                 continue
-                            url = parse_qs(url[5:])['q'][0]
+                            url = urllib.parse_qs(url[5:])['q'][0]
                             entries.append(url)
     return entries, root

@@ -1,6 +1,7 @@
 aiohttp
 bs4
 cogs
+config
 discord
 discord.py
 discord.py[voice]
@@ -8,6 +9,8 @@ pip
 PyNaCl
 praw
 prawcore
+lxml
+requests
 urllib3==1.23
 git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py[voice]
 git+https://github.com/Rapptz/discord.py@async#egg=discord.py

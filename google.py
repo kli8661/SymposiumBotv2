@@ -7,7 +7,7 @@ import urllib.parse
 from bs4 import BeautifulSoup
 BOT_PREFIX = '.'
 from discord.ext.commands import Bot
-from pip._vendor.html5lib.treebuilders import etree
+from lxml import etree
 #https://github.com/pypa/pip/tree/master/src/pip/_vendor/html5lib/treebuilders
 
 m_api_key = config.mapikey
@@ -86,7 +86,7 @@ async def get_google_entries(query):
         async with session.get('https://www.google.com/search', params=params, headers=headers) as resp:
             if resp.status != 200:
                 config = load_optional_config()
-                async with session.get("https://www.googleapis.com/customsearch/v1?q=" + quote_plus(
+                async with session.get("https://www.googleapis.com/customsearch/v1?q=" + urllib.parse.quote_plus(
                         query) + "&start=" + '1' + "&key=" + config['google_api_key'] + "&cx=" + config[
                                            'custom_search_engine']) as resp:
                     result = json.loads(await resp.text())

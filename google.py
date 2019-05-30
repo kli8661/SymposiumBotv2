@@ -21,8 +21,8 @@ m_cx_key = config.mcxkey
 
 # results = google_search('facebook', api_key, cx_key, num=2)
 
-# for result in results:
-# pprint.pprint(result)
+# for result in results
+# pprint.pprint(result
 
 #    title = result['title']
 #    link = result['formattedUrl']

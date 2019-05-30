@@ -1,4 +1,4 @@
-# SymposiumBotv2
+# SymposiumBotV2
 Discord bot for senior year project.
 
 Commands list (to be added): 

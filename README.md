@@ -34,10 +34,8 @@ Commands list (may or may not have more to come):
   rsearch   | Searches reddit. [.rsearch <example search>]
   
   r_meme    | Grabs memes from meme subreddits.
-  
-  google    | Googles things on the internet. [.google <query>]
 
-  g         | Gearches google [.g <example search>]
+  g         | Searches google [.g <example search>]
 
 ---
 Type .help command for more info on a command.

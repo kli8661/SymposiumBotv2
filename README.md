@@ -36,6 +36,8 @@ Commands list (may or may not have more to come):
   
   r_meme    | Grabs memes from meme subreddits.
 
+  g         | Gearches google [.g <example search>]
+
 ---
 Type .help command for more info on a command.
 You can also type .help category for more info on a category.

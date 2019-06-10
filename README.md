@@ -37,6 +37,8 @@ Commands list (may or may not have more to come):
   
   google    | Googles things on the internet. [.google <query>]
 
+  g         | Gearches google [.g <example search>]
+
 ---
 Type .help command for more info on a command.
 You can also type .help category for more info on a category.

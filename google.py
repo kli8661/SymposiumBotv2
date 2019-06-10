@@ -4,6 +4,9 @@ import aiohttp
 from discord.ext import commands
 from utils.checks import load_optional_config, embed_perms
 import urllib.parse
+from urllib.request import urlopen
+from lxml import html
+import requests
 from bs4 import BeautifulSoup
 from lxml import etree
 
@@ -72,7 +75,7 @@ class Google:
                 await ctx.send(msg)
 
 
-async def get_google_entries(query):
+'''async def get_google_entries(query):
     params = {
         'q': query,
         'safe': 'off'
@@ -115,3 +118,15 @@ async def get_google_entries(query):
                             url = urllib.parse.parse_qs(url[5:])['q'][0]
                             entries.append(url)
     return entries, root
+'''
+
+async def get_google_entries(query):
+    response = json.loads(requests.get("https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y").text)
+    url = urllib.request.urlopen("https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y")
+    content = url.read()
+    soup = BeautifulSoup(content, 'html.parser')
+    newDictionary = json.loads(str(soup))
+
+
+
+

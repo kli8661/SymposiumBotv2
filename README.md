@@ -1,5 +1,4 @@
 # SymposiumBotV2
-Bot for a school project.
 
 Bot prefix is ".", use that before every command.
 -
@@ -35,6 +34,8 @@ Commands list (may or may not have more to come):
   rsearch   | Searches reddit. [.rsearch <example search>]
   
   r_meme    | Grabs memes from meme subreddits.
+  
+  google    | Googles things on the internet. [.google <query>]
 
 ---
 Type .help command for more info on a command.

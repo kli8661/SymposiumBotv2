@@ -35,9 +35,9 @@ Commands list (may or may not have more to come):
   
   r_meme    | Grabs memes from meme subreddits.
 
-  g         | Searches Google [.g <example search>](WIP!) 
+  g         | Searches Google [.g <example search>]. (WIP!) 
 
-  i	    | Searches Google Images [.i <query>](WIP!) 
+  i	    | Searches Google Images [.i <query>]. (WIP!) 
 
 ---
 Type .help command for more info on a command.

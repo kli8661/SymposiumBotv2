@@ -121,12 +121,15 @@ class Google:
 '''
 
 async def get_google_entries(query):
-    response = json.loads(requests.get("https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y").text)
-    url = urllib.request.urlopen("https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y")
-    content = url.read()
-    soup = BeautifulSoup(content, 'html.parser')
-    newDictionary = json.loads(str(soup))
+   # response = json.loads(requests.get("https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y").text)
+   # url = urllib.request.urlopen("https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y")
+   # content = url.read()
+   #soup = BeautifulSoup(content, 'html.parser')
+#  newDictionary = json.loads(str(soup))
 
 
-
+    url = "https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y"
+    response = urllib.request.urlopen(url)
+    data = json.loads(response.read())
+    print(data["snippet"])
 

@@ -3,25 +3,25 @@
 Bot prefix is ".", use that before every command.
 -
 
-Commands list (may or may not have more to come):
+Current Commands List:
 
   help      | Shows this message.
   
   ping      | Ping and Pong.
   
-  8ball     | Answers from the beyond. [.8ball <question>]
+  8ball     | Answers from the beyond. .8ball <question>
   
-  clear     | Clears a certain amount of messages. [.clear <amount>]
+  clear     | Clears a certain amount of messages. .clear <amount>
   
-  square    | Squares a number. [.square <number>]
+  square    | Squares a number. .square <number>
   
-  bitcoin   | Bitcoin Price.
+  bitcoin   | Checks Bitcoin price.
   
   join      | Joins voice channel.
   
   leave     | Leaves voice channel.
   
-  play      | Plays Music. [.play <URL>]
+  play      | Plays Music. .play <URL>
   
   pause     | Pause Music
   
@@ -29,15 +29,15 @@ Commands list (may or may not have more to come):
   
   stop      | Stops Music
   
-  hot_posts | Grabs hot posts from subreddit. [.hot_posts <subreddit> <number of posts>]
+  hot_posts | Grabs hot posts from subreddit. .hot_posts <subreddit> <number of posts>
   
-  rsearch   | Searches reddit. [.rsearch <example search>]
+  rsearch   | Searches reddit. .rsearch <example search>
   
-  r_meme    | Grabs memes from meme subreddits.
+  r_meme    | Grabs random memes from ramdom meme subreddits.
 
-  g         | Searches Google [.g <example search>]. (WIP!) 
+  g         | Searches Google .g <example search>. (WIP!) 
 
-  i	    | Searches Google Images [.i <query>]. (WIP!) 
+  i	    | Searches Google Images .i <query>. (WIP!) 
 
 ---
 Type .help command for more info on a command.

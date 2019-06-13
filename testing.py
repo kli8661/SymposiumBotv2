@@ -532,6 +532,8 @@ async def get_google_entries(query):
 
 
 @client.command(name='testg',
+                description='Searches Google.',
+                brief='Searches Google. \n[.testg <example search>]',
                 pass_context=True)
 async def testg(ctx, *, query):
     channel = ctx.message.channel

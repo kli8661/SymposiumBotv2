@@ -544,7 +544,7 @@ async def testg(ctx, *, query):
         title='Search Results For: ' + querystr,
         colour=discord.Colour.blue()
     )
-    embed.add_field(name=str(str(data["snippet"])), value='URL: ' + str(data["link"]), inline=False)
+    embed.add_field(name=str(str(data["title"])), value='URL: ' + str(data["link"]), inline=False)
     await client.send_message(channel, embed)
 
 

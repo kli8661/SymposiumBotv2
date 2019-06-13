@@ -531,6 +531,23 @@ async def get_google_entries(query):
     return entries, root
 
 
+@client.command(name='testg',
+                pass_context=True)
+async def testg(ctx, *, query):
+    channel = ctx.message.channel
+    querystr = str(query)
+    url = "https://www.googleapis.com/customsearch/v1?q=" + urllib.parse.quote_plus(query) + "&start=" + '1' + "&key=" + config.mapikey + "&cx=" + config.mcxkey
+    response = urllib.request.urlopen(url)
+    data = json.loads(response.read())
+    embed = discord.Embed(
+        author=querystr,
+        title='Search Results For: ' + querystr,
+        colour=discord.Colour.blue()
+    )
+    embed.add_field(name=str(str(data["snippet"])), value='URL: ' + str(data["link"]), inline=False)
+    await client.send_message(channel, embed)
+
+
 @rsearch.error
 @hot_posts.error
 async def timeout_error(error, ctx):

@@ -15,6 +15,19 @@ BOT_PREFIX = '.'
 m_api_key = config.mapikey
 m_cx_key = config.mcxkey
 
+async def get_google_entries(query):
+    url = "https://www.googleapis.com/customsearch/v1?q=" + urllib.parse.quote_plus(query) + "&start=" + '1' + "&key=" + config.mapikey + "&cx=" + config.mcxkey
+    response = urllib.request.urlopen(url)
+    data = json.loads(response.read())
+    # await.say(print("here are the search results for:"+query)+
+    # print(data["snippet"])+
+    # print("here is a link" + data["link"]))
+
+
+
+
+
+
 
 # def google_search(search_term, api_key, cx_id, **kwargs):
 # service = build("customSearch", "v1", developerKey=api_key)
@@ -32,7 +45,7 @@ m_cx_key = config.mcxkey
 #    print(title)
 #    print(link)
 #    print(dis)
-
+'''
 class Google:
     def parse_google__card(self, node):
         if node is None or type(node) is int:
@@ -73,7 +86,7 @@ class Google:
                 else:
                     msg = entries[0]
                 await ctx.send(msg)
-
+'''
 
 '''async def get_google_entries(query):
     params = {
@@ -120,16 +133,16 @@ class Google:
     return entries, root
 '''
 
-async def get_google_entries(query):
+#async def get_google_entries(query):
    # response = json.loads(requests.get("https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y").text)
    # url = urllib.request.urlopen("https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y")
    # content = url.read()
    #soup = BeautifulSoup(content, 'html.parser')
-#  newDictionary = json.loads(str(soup))
+   #newDictionary = json.loads(str(soup))
 
 
-    url = "https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y"
-    response = urllib.request.urlopen(url)
-    data = json.loads(response.read())
-    print(data["snippet"])
+    # url = "https://www.googleapis.com/customsearch/v1?q=computerscience&start=1&key=AIzaSyATGAnmCuJHlvsdVn21472sJPuAiEanSY4&cx=008921493878794350931:tioeliy7j1y"
+
+
+
 

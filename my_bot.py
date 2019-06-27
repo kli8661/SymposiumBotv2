@@ -37,5 +37,7 @@ testing.r_meme()
 testing.meme_antispam()
 testing.g()
 testing.i()
+testing.testg()
+testing.delete()
 
 client.run(TOKEN)

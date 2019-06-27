@@ -74,6 +74,23 @@ async def clear(context, amount):
     await client.say('Cleared ' + amount + ' messages!')
 
 
+@client.command(name='delete',
+                description='delete',
+                brief='delete',
+                pass_context=True)
+async def delete(ctx, amount):
+    amount = amount
+    channel = ctx.message.channel
+    message = ctx.message
+    test = []
+    args = message.content.split(" ")[1:]
+    async for message in client.logs_from(channel, limit=int(amount) + 1):
+        if message.content.startswith("!"):
+            test.append(message)
+            await client.delete_message(message)
+    await client.say('Cleared ' + amount + ' prefix messages!')
+
+
 @client.command(name='square',
                 description="Squares a number.",
                 brief="Squares a number. \n[.square <number>]")
